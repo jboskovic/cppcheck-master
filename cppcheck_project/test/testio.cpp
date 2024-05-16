@@ -90,7 +90,8 @@ private:
     };
 
 #define check(...) check_(__FILE__, __LINE__, __VA_ARGS__)
-    void check_(const char* file, int line, const char* code, const CheckOptions& options = make_default_obj()) {
+    template<size_t size>
+    void check_(const char* file, int line, const char (&code)[size], const CheckOptions& options = make_default_obj()) {
         // TODO: using dedicated Settings (i.e. copying it) object causes major slowdown
         settings1.severity.setEnabled(Severity::portability, options.portability);
         settings1.certainty.setEnabled(Certainty::inconclusive, options.inconclusive);
@@ -826,7 +827,8 @@ private:
 #define TEST_PRINTF_ERR_AKA_CPP(format, requiredType, actualType, akaType) \
     TEST_PRINTF_ERR_AKA_("test.cpp", format, requiredType, actualType, akaType)
 
-    void testFormatStrNoWarn(const char *filename, unsigned int linenr, const char* code,
+    template<size_t size>
+    void testFormatStrNoWarn(const char *filename, unsigned int linenr, const char (&code)[size],
                              bool cpp = false) {
         check(code, dinit(CheckOptions, $.inconclusive = true, $.platform = Platform::Type::Unix32, $.onlyFormatStr = true, $.cpp = cpp));
         assertEquals(filename, linenr, emptyString, errout_str());
@@ -838,8 +840,9 @@ private:
         assertEquals(filename, linenr, emptyString, errout_str());
     }
 
+    template<size_t size>
     void testFormatStrWarn(const char *filename, unsigned int linenr,
-                           const char* code, const char* testScanfErrString,
+                           const char (&code)[size], const char* testScanfErrString,
                            bool cpp = false) {
         check(code, dinit(CheckOptions, $.inconclusive = true, $.platform = Platform::Type::Unix32, $.onlyFormatStr = true, $.cpp = cpp));
         assertEquals(filename, linenr, testScanfErrString, errout_str());
@@ -851,8 +854,9 @@ private:
         assertEquals(filename, linenr, testScanfErrString, errout_str());
     }
 
+    template<size_t size>
     void testFormatStrWarnAka(const char *filename, unsigned int linenr,
-                              const char* code, const char* testScanfErrAkaString, const char* testScanfErrAkaWin64String,
+                              const char (&code)[size], const char* testScanfErrAkaString, const char* testScanfErrAkaWin64String,
                               bool cpp = false) {
         check(code, dinit(CheckOptions, $.inconclusive = true, $.portability = true, $.platform = Platform::Type::Unix32, $.onlyFormatStr = true, $.cpp = cpp));
         assertEquals(filename, linenr, testScanfErrAkaString, errout_str());
@@ -864,8 +868,9 @@ private:
         assertEquals(filename, linenr, testScanfErrAkaWin64String, errout_str());
     }
 
+    template<size_t size>
     void testFormatStrWarnAkaWin64(const char *filename, unsigned int linenr,
-                                   const char* code, const char* testScanfErrAkaWin64String,
+                                   const char (&code)[size], const char* testScanfErrAkaWin64String,
                                    bool cpp = false) {
         check(code, dinit(CheckOptions, $.inconclusive = true, $.portability = true, $.platform = Platform::Type::Unix32, $.onlyFormatStr = true, $.cpp = cpp));
         assertEquals(filename, linenr, emptyString, errout_str());
@@ -877,8 +882,9 @@ private:
         assertEquals(filename, linenr, testScanfErrAkaWin64String, errout_str());
     }
 
+    template<size_t size>
     void testFormatStrWarnAkaWin32(const char *filename, unsigned int linenr,
-                                   const char* code, const char* testScanfErrAkaString,
+                                   const char (&code)[size], const char* testScanfErrAkaString,
                                    bool cpp = false) {
         check(code, dinit(CheckOptions, $.inconclusive = true, $.portability = true, $.platform = Platform::Type::Unix32, $.onlyFormatStr = true, $.cpp = cpp));
         assertEquals(filename, linenr, testScanfErrAkaString, errout_str());
@@ -2127,7 +2133,7 @@ private:
         ASSERT_EQUALS("", errout_str());
 
         {
-            const char * code = "void g() {\n" // #5348
+            const char code[] = "void g() {\n" // #5348
                                 "    size_t s1;\n"
                                 "    ptrdiff_t s2;\n"
                                 "    ssize_t s3;\n"

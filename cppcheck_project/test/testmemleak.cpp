@@ -40,7 +40,8 @@ private:
     }
 
 #define functionReturnType(code) functionReturnType_(code, __FILE__, __LINE__)
-    CheckMemoryLeak::AllocType functionReturnType_(const char code[], const char* file, int line) {
+    template<size_t size>
+    CheckMemoryLeak::AllocType functionReturnType_(const char (&code)[size], const char* file, int line) {
         // Tokenize..
         SimpleTokenizer tokenizer(settings, *this);
         ASSERT_LOC(tokenizer.tokenize(code), file, line);
@@ -115,7 +116,8 @@ private:
     const Settings settings = settingsBuilder().library("std.cfg").library("posix.cfg").build();
 
 #define check(...) check_(__FILE__, __LINE__, __VA_ARGS__)
-    void check_(const char* file, int line, const char code[]) {
+    template<size_t size>
+    void check_(const char* file, int line, const char (&code)[size]) {
         // Tokenize..
         SimpleTokenizer tokenizer(settings, *this);
         ASSERT_LOC(tokenizer.tokenize(code), file, line);
@@ -441,7 +443,8 @@ private:
      * Tokenize and execute leak check for given code
      * @param code Source code
      */
-    void check_(const char* file, int line, const char code[]) {
+    template<size_t size>
+    void check_(const char* file, int line, const char (&code)[size]) {
         // Tokenize..
         SimpleTokenizer tokenizer(settings, *this);
         ASSERT_LOC(tokenizer.tokenize(code), file, line);
@@ -1644,7 +1647,8 @@ public:
 private:
     const Settings settings = settingsBuilder().library("std.cfg").library("posix.cfg").build();
 
-    void check_(const char* file, int line, const char code[], bool cpp = true) {
+    template<size_t size>
+    void check_(const char* file, int line, const char (&code)[size], bool cpp = true) {
         // Tokenize..
         SimpleTokenizer tokenizer(settings, *this);
         ASSERT_LOC(tokenizer.tokenize(code, cpp), file, line);
@@ -2252,7 +2256,8 @@ public:
 private:
     const Settings settings = settingsBuilder().certainty(Certainty::inconclusive).severity(Severity::warning).library("std.cfg").library("posix.cfg").build();
 
-    void check_(const char* file, int line, const char code[]) {
+    template<size_t size>
+    void check_(const char* file, int line, const char (&code)[size]) {
         // Tokenize..
         SimpleTokenizer tokenizer(settings, *this);
         ASSERT_LOC(tokenizer.tokenize(code), file, line);
