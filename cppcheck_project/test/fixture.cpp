@@ -89,31 +89,34 @@ TestFixture::TestFixture(const char * const _name)
     TestRegistry::theInstance().addTest(this);
 }
 
+bool TestFixture::prepareTestForCoverage(const char testname[]){
+    std::string testDir = "./coverage_per_test/" + std::string(testname); // Adjust the path as needed
+    if (mkdir(testDir.c_str(), 0777) != 0) {
+        // If directory creation fails and it's not because the directory exists
+        if (errno != EEXIST) {
+            std::cerr << "Failed to create directory for test: " << testDir
+                    << ", Error: " << strerror(errno) << std::endl;
+            return false;
+        }
+    }
+
+    // Set the environment variables to point to the new directory
+    if (setenv("GCOV_PREFIX", testDir.c_str(), 1) != 0) {
+        std::cerr << "Failed to set GCOV_PREFIX environment variable." << std::endl;
+        return false;
+    }
+
+    if (setenv("GCOV_PREFIX_STRIP", "0", 1) != 0) {
+        std::cerr << "Failed to set GCOV_PREFIX_STRIP environment variable." << std::endl;
+        return false;
+    }
+}
 
 bool TestFixture::prepareTest(const char testname[])
 {
     const char* coverage = std::getenv("COVERAGE");
     if (coverage) {
-        std::string testDir = "./coverage_per_test/" + std::string(testname); // Adjust the path as needed
-        if (mkdir(testDir.c_str(), 0777) != 0) {
-        // If directory creation fails and it's not because the directory exists
-            if (errno != EEXIST) {
-                std::cerr << "Failed to create directory for test: " << testDir
-                        << ", Error: " << strerror(errno) << std::endl;
-                return false;
-            }
-        }
-
-        // Set the environment variables to point to the new directory
-        if (setenv("GCOV_PREFIX", testDir.c_str(), 1) != 0) {
-            std::cerr << "Failed to set GCOV_PREFIX environment variable." << std::endl;
-            return false;
-        }
-
-        if (setenv("GCOV_PREFIX_STRIP", "0", 1) != 0) {
-            std::cerr << "Failed to set GCOV_PREFIX_STRIP environment variable." << std::endl;
-            return false;
-        }
+        prepareTestForCoverage(testname);
     }
     mVerbose = false;
     mTemplateFormat.clear();
@@ -138,6 +141,7 @@ bool TestFixture::prepareTest(const char testname[])
     return false;
 }
 
+   
 void TestFixture::teardownTest()
 {
     teardownTestInternal();
