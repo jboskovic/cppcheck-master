@@ -18,3 +18,11 @@ def exit_with_message(message):
 def write_json(nfile, data):
     with open(nfile, "w") as f:
         json.dump(data, f)
+
+def read_json(nfile):
+    try:
+        with open(nfile, "r") as read_content:
+            return json.loads(read_content.read())
+    except FileNotFoundError:
+        print("Failed while reading file ", nfile)
+        return {}
