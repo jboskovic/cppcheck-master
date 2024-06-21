@@ -1,6 +1,14 @@
 **CI/CD Test Selection Tool**
+
+**Opis Projekta**
  
-**Opis**
+CI/CD Test Selection Tool je alat koji optimizuje proces testiranja unutar CI/CD pipeline-a. Projekat se sastoji od tri glavna direktorijuma: cppcheck, selection_tool, i coverage_tool.
+ 
+- cppcheck: Ovaj direktorijum sadrzi open source projekat Cppcheck, koji se koristi za demonstraciju znacaja i efikasnosti Selection Tool alata. Cppcheck je alat za staticku analizu C/C++ koda koji pomaze u otkrivanju razlicitih vrsta gresaka u kodu.
+- selection_tool: Direktorijum koji sadrži implementaciju Selection Tool alata. Alat analizira Pull Request-ove i inteligentno odabira testove koji trebaju biti pokrenuti na osnovu promena u kodu.
+- coverage_tool: Ovde se nalazi implementacija alata za praćenje pokrivenosti koda. Alat prati koje delove koda pokrivaju pojedinacni testovi i generiše izveštaje u JSON formatu.
+ 
+**Opis alata**
  
 CI/CD Test Selection Tool je alat dizajniran za optimizaciju procesa testiranja u CI/CD pipeline-u.
 Alat integrise pracenje pokrivenosti koda tokom kompajliranja i izvrsavanja testova, omogucavajuci detaljno pracenje koriscenih fajlova i funkcija za svaki pojedinacni test.
