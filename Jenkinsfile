@@ -16,8 +16,6 @@ pipeline {
                 }
             }
         }
-	}
-    stages {
         stage('Build') {
             steps {
                 // Add build commands here
