@@ -1,6 +1,10 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'ubuntu:latest'
+            args '-v /var/jenkins_home:/var/jenkins_home'
+        }
+    }
     stages {
         stage('Verify Linux Environment') {
             steps {
