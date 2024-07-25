@@ -128,9 +128,9 @@ ifdef CYGWIN
     CXXFLAGS+=-Wl,--stack,8388608
 endif # CYGWIN
 
-ifndef CXX
-    CXX=gcc
-endif
+
+CXX=gcc
+
 
 ifeq (clang++, $(findstring clang++,$(CXX)))
     CPPCHK_GLIBCXX_DEBUG=
