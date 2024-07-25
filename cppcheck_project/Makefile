@@ -359,7 +359,7 @@ cppcheck: $(EXTOBJ) $(LIBOBJ) $(CLIOBJ)
 all:	cppcheck testrunner
 
 testrunner: $(EXTOBJ) $(TESTOBJ) $(LIBOBJ) cli/executor.o cli/processexecutor.o cli/singleexecutor.o cli/threadexecutor.o cli/cmdlineparser.o cli/cppcheckexecutor.o cli/cppcheckexecutorseh.o cli/signalhandler.o cli/stacktrace.o cli/filelister.o
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lgcov -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
 
 test:	all
 	./testrunner
