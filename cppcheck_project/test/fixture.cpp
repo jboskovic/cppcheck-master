@@ -36,7 +36,7 @@
 
 #include <cstdlib> // for getenv and setenv
 #include <sys/stat.h> // for mkdir
-extern "C" void __gcov_flush();
+extern "C" void __gcov_dump();
 
 /**
  * TestRegistry
@@ -145,7 +145,7 @@ bool TestFixture::prepareTest(const char testname[])
 void TestFixture::teardownTest()
 {
     teardownTestInternal();
-    __gcov_flush();
+    __gcov_dump();
     {
         const std::string s = errout_str();
         if (!s.empty())
