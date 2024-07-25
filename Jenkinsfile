@@ -1,11 +1,22 @@
 pipeline {
-    agent {
-        docker {
-            image 'ubuntu:latest'
-            args '-u root:root' 
-        }
-    }
+    agent any
 
+    stages {
+        stage('Verify Linux Environment') {
+            steps {
+                script {
+                    echo "Operating System Information:"
+                    sh 'uname -a'
+                    echo "Distribution Information:"
+                    sh 'lsb_release -a 2>/dev/null || cat /etc/*release'
+                    echo "Current User:"
+                    sh 'whoami'
+                    echo "Home Directory:"
+                    sh 'echo $HOME'
+                }
+            }
+        }
+	}
     stages {
         stage('Build') {
             steps {
