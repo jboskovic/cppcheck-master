@@ -1,10 +1,12 @@
 pipeline {
     agent any
-    options {
-        // Clean the workspace before the build starts
-        cleanWs()
-    }
     stages {
+        stage('Cleanup') {
+            steps {
+                // Clean the workspace before the build starts
+                cleanWs()
+            }
+        }
         stage('Build') {
             steps {
                 // Add build commands here
