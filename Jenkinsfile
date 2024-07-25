@@ -1,20 +1,10 @@
 pipeline {
     agent any
+    options {
+        // Clean the workspace before the build starts
+        cleanWs()
+    }
     stages {
-        stage('Verify Linux Environment') {
-            steps {
-                script {
-                    echo "Operating System Information:"
-                    sh 'uname -a'
-                    echo "Distribution Information:"
-                    sh 'lsb_release -a 2>/dev/null || cat /etc/*release'
-                    echo "Current User:"
-                    sh 'whoami'
-                    echo "Home Directory:"
-                    sh 'echo $HOME'
-                }
-            }
-        }
         stage('Build') {
             steps {
                 // Add build commands here
