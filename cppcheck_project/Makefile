@@ -129,9 +129,6 @@ ifdef CYGWIN
 endif # CYGWIN
 
 
-# CXX=gcc
-
-
 ifeq (clang++, $(findstring clang++,$(CXX)))
     CPPCHK_GLIBCXX_DEBUG=
 endif
@@ -152,6 +149,8 @@ endif
 ifeq ($(COVERAGE), 1)
     $(info Adding coverage flags to CXXFLAGS)
     CXXFLAGS += -fprofile-arcs -ftest-coverage
+    # Create the coverage_per_test directory if it doesn't exist
+    $(shell mkdir -p coverage_per_test)
 endif
 
 ifeq ($(HAVE_RULES),yes)
