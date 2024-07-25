@@ -147,6 +147,8 @@ else ifeq ($(CXX), c++)
     ifeq ($(shell uname -s), Darwin)
         override CXXFLAGS += -std=c++0x
     endif
+else ifeq ($(CXX), gcc)
+    override CXXFLAGS += -std=c++11
 endif
 
 ifeq ($(COVERAGE), 1)
