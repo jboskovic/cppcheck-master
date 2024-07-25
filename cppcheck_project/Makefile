@@ -129,7 +129,7 @@ ifdef CYGWIN
 endif # CYGWIN
 
 
-CXX=gcc
+# CXX=gcc
 
 
 ifeq (clang++, $(findstring clang++,$(CXX)))
