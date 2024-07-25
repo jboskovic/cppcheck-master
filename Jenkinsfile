@@ -19,7 +19,7 @@ pipeline {
             steps {
                 // Add build commands here
                 echo 'Building..'
-                sh 'cd cppcheck_project && make COVERAGE=1'
+                sh 'cd cppcheck_project && make clean && make COVERAGE=1'
             }
         }
         stage('Test') {
