@@ -14,7 +14,7 @@ pipeline {
                 sh 'cd cppcheck_project && make testclasses COVERAGE=1'
                 // Add test commands here
                 echo 'Testing..'
-                sh 'cd cppcheck_project && bash run_list_of_tests.sh all_tests.sh'
+                sh 'cd cppcheck_project && bash run_list_of_tests.sh all_tests.txt'
             }
         }
         stage("Collecting") {
