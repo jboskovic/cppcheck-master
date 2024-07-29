@@ -22,6 +22,7 @@
 #include "helpers.h"
 #include "settings.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <string>
 #include <vector>
@@ -933,4 +934,5 @@ private:
 };
 
 REGISTER_TEST(TestSizeof)
+REGISTER_TEST_CLASS(TestSizeof)
 

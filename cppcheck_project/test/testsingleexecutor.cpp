@@ -25,6 +25,7 @@
 #include "singleexecutor.h"
 #include "suppressions.h"
 #include "timer.h"
+#include "testmacros.h"
 
 #include <cstdlib>
 #include <list>
@@ -387,4 +388,6 @@ public:
 };
 
 REGISTER_TEST(TestSingleExecutorFiles)
+REGISTER_TEST_CLASS(TestSingleExecutorFiles)
 REGISTER_TEST(TestSingleExecutorFS)
+REGISTER_TEST_CLASS(TestSingleExecutorFS)

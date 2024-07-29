@@ -18,6 +18,7 @@
 
 #include "filesettings.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 class TestFileSettings : public TestFixture {
 public:
@@ -63,3 +64,4 @@ private:
 };
 
 REGISTER_TEST(TestFileSettings)
+REGISTER_TEST_CLASS(TestFileSettings)

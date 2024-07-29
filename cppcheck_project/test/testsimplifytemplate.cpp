@@ -25,6 +25,7 @@
 #include "token.h"
 #include "tokenize.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <cstring>
 #include <sstream>
@@ -6458,3 +6459,4 @@ private:
 };
 
 REGISTER_TEST(TestSimplifyTemplate)
+REGISTER_TEST_CLASS(TestSimplifyTemplate)

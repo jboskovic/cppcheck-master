@@ -22,6 +22,7 @@
 #include "helpers.h"
 #include "settings.h"
 #include "token.h"
+#include "testmacros.h"
 
 #include <list>
 #include <string>
@@ -1871,3 +1872,4 @@ private:
 };
 
 REGISTER_TEST(TestGarbage)
+REGISTER_TEST_CLASS(TestGarbage)

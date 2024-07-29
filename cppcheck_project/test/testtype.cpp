@@ -24,6 +24,7 @@
 #include "settings.h"
 #include "standards.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <list>
 #include <string>
@@ -515,3 +516,4 @@ private:
 };
 
 REGISTER_TEST(TestType)
+REGISTER_TEST_CLASS(TestType)

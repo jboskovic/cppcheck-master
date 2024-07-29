@@ -24,6 +24,7 @@
 #include "settings.h"
 #include "tokenize.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <list>
 #include <sstream>
@@ -8991,3 +8992,4 @@ private:
 };
 
 REGISTER_TEST(TestClass)
+REGISTER_TEST_CLASS(TestClass)

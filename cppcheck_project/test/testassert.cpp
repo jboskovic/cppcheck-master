@@ -22,6 +22,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestAssert : public TestFixture {
 public:
@@ -257,3 +258,4 @@ private:
 };
 
 REGISTER_TEST(TestAssert)
+REGISTER_TEST_CLASS(TestAssert)

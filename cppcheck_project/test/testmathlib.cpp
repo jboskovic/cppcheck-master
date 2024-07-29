@@ -19,6 +19,7 @@
 #include "config.h"
 #include "mathlib.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <limits>
 #include <string>
@@ -1496,3 +1497,4 @@ private:
 };
 
 REGISTER_TEST(TestMathLib)
+REGISTER_TEST_CLASS(TestMathLib)

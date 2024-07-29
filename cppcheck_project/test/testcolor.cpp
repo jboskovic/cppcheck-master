@@ -18,6 +18,7 @@
 
 #include "color.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 class TestColor : public TestFixture {
 public:
@@ -36,3 +37,4 @@ private:
 };
 
 REGISTER_TEST(TestColor)
+REGISTER_TEST_CLASS(TestColor)

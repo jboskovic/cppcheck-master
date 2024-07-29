@@ -21,6 +21,7 @@
 #include "filesettings.h"
 #include "fixture.h"
 #include "redirect.h"
+#include "testmacros.h"
 
 #include <list>
 #include <map>
@@ -412,3 +413,4 @@ private:
 };
 
 REGISTER_TEST(TestImportProject)
+REGISTER_TEST_CLASS(TestImportProject)

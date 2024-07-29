@@ -22,6 +22,7 @@
 #include "settings.h"
 #include "fixture.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <string>
 #include <vector>
@@ -783,3 +784,4 @@ private:
 };
 
 REGISTER_TEST(TestIncompleteStatement)
+REGISTER_TEST_CLASS(TestIncompleteStatement)

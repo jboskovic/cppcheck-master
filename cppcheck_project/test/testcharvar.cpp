@@ -22,6 +22,7 @@
 #include "helpers.h"
 #include "platform.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestCharVar : public TestFixture {
 public:
@@ -194,3 +195,4 @@ private:
 };
 
 REGISTER_TEST(TestCharVar)
+REGISTER_TEST_CLASS(TestCharVar)

@@ -22,6 +22,7 @@
 #include "helpers.h"
 #include "settings.h"
 #include "standards.h"
+#include "testmacros.h"
 
 #include <string>
 
@@ -2162,3 +2163,4 @@ private:
 };
 
 REGISTER_TEST(TestFunctions)
+REGISTER_TEST_CLASS(TestFunctions)

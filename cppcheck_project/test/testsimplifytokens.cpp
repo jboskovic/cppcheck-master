@@ -23,6 +23,7 @@
 #include "standards.h"
 #include "fixture.h"
 #include "token.h"
+#include "testmacros.h"
 
 #include <string>
 
@@ -2607,3 +2608,4 @@ private:
 };
 
 REGISTER_TEST(TestSimplifyTokens)
+REGISTER_TEST_CLASS(TestSimplifyTokens)

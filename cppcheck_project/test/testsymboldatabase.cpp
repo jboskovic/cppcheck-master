@@ -26,6 +26,7 @@
 #include "token.h"
 #include "tokenize.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -10575,3 +10576,4 @@ private:
 };
 
 REGISTER_TEST(TestSymbolDatabase)
+REGISTER_TEST_CLASS(TestSymbolDatabase)

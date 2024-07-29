@@ -24,6 +24,7 @@
 #include "settings.h"
 #include "standards.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <string>
 #include <vector>
@@ -12084,3 +12085,4 @@ private:
 };
 
 REGISTER_TEST(TestOther)
+REGISTER_TEST_CLASS(TestOther)

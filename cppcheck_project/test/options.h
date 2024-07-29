@@ -37,6 +37,7 @@ public:
     bool summary() const;
     /** Perform dry run. */
     bool dry_run() const;
+    bool listClasses() const; 
     /** Which test should be run. Empty string means 'all tests' */
     const std::set<std::string>& which_test() const;
 
@@ -52,6 +53,7 @@ private:
     const bool mHelp;
     const bool mSummary;
     const bool mDryRun;
+    bool mListClasses; 
     std::string mExe;
 };
 

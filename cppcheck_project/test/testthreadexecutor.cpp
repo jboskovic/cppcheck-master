@@ -24,6 +24,7 @@
 #include "suppressions.h"
 #include "threadexecutor.h"
 #include "timer.h"
+#include "testmacros.h"
 
 #include <cstdlib>
 #include <list>
@@ -375,4 +376,6 @@ public:
 };
 
 REGISTER_TEST(TestThreadExecutorFiles)
+REGISTER_TEST_CLASS(TestThreadExecutorFiles)
 REGISTER_TEST(TestThreadExecutorFS)
+REGISTER_TEST_CLASS(TestThreadExecutorFS)

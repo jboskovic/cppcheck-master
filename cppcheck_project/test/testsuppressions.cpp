@@ -28,6 +28,7 @@
 #include "helpers.h"
 #include "threadexecutor.h"
 #include "singleexecutor.h"
+#include "testmacros.h"
 
 #include <cstddef>
 #include <cstring>
@@ -1522,3 +1523,4 @@ private:
 };
 
 REGISTER_TEST(TestSuppressions)
+REGISTER_TEST_CLASS(TestSuppressions)

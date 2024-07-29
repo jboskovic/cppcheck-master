@@ -24,6 +24,7 @@
 #include "standards.h"
 #include "token.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <sstream>
 #include <string>
@@ -164,3 +165,4 @@ private:
 };
 
 REGISTER_TEST(TestTokenList)
+REGISTER_TEST_CLASS(TestTokenList)

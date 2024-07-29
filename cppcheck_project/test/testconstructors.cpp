@@ -22,6 +22,7 @@
 #include "helpers.h"
 #include "standards.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestConstructors : public TestFixture {
 public:
@@ -4500,3 +4501,4 @@ private:
 };
 
 REGISTER_TEST(TestConstructors)
+REGISTER_TEST_CLASS(TestConstructors)

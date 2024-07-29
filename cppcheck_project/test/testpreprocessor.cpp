@@ -28,6 +28,7 @@
 #include "suppressions.h"
 #include "fixture.h"
 #include "helpers.h"
+#include "testmacros.h"
 
 #include <cstring>
 #include <list>
@@ -2482,3 +2483,4 @@ private:
 };
 
 REGISTER_TEST(TestPreprocessor)
+REGISTER_TEST_CLASS(TestPreprocessor)

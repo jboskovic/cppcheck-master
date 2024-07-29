@@ -18,6 +18,7 @@
 
 #include "fixture.h"
 #include "utils.h"
+#include "testmacros.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -430,3 +431,4 @@ private:
 };
 
 REGISTER_TEST(TestUtils)
+REGISTER_TEST_CLASS(TestUtils)

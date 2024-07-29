@@ -23,6 +23,7 @@
 #include "settings.h"
 #include "symboldatabase.h"
 #include "token.h"
+#include "testmacros.h"
 
 #include <list>
 
@@ -100,6 +101,7 @@ private:
 };
 
 REGISTER_TEST(TestMemleak)
+REGISTER_TEST_CLASS(TestMemleak)
 
 
 
@@ -419,6 +421,7 @@ private:
 };
 
 REGISTER_TEST(TestMemleakInFunction)
+REGISTER_TEST_CLASS(TestMemleakInFunction)
 
 
 
@@ -1627,7 +1630,7 @@ private:
 };
 
 REGISTER_TEST(TestMemleakInClass)
-
+REGISTER_TEST_CLASS(TestMemleakInClass)
 
 
 
@@ -2236,6 +2239,7 @@ private:
 };
 
 REGISTER_TEST(TestMemleakStructMember)
+REGISTER_TEST_CLASS(TestMemleakStructMember)
 
 
 
@@ -2879,5 +2883,6 @@ private:
     }
 };
 REGISTER_TEST(TestMemleakNoVar)
+REGISTER_TEST_CLASS(TestMemleakNoVar)
 
 

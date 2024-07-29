@@ -20,8 +20,19 @@
 #include "options.h"
 #include "preprocessor.h"
 #include "fixture.h"
+#include "testregistry.h"
 
 #include <cstdlib>
+#include <iostream>
+
+
+// Function to list all unique class names
+void listAllClassNames() {
+    const auto& classNames = TestRegistry::instance().getTestClasses();
+    for (const auto& className : classNames) {
+        std::cout << className << std::endl;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +48,10 @@ int main(int argc, char *argv[])
 
     if (args.help()) {
         TestFixture::printHelp();
+        return EXIT_SUCCESS;
+    }
+    if (args.listClasses()) {  // Check for the new option
+        listAllClassNames();
         return EXIT_SUCCESS;
     }
     const std::size_t failedTestsCount = TestFixture::runTests(args);

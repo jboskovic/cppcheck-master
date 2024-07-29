@@ -18,6 +18,7 @@
 
 #include "options.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <functional>
 #include <set>
@@ -138,3 +139,4 @@ private:
 };
 
 REGISTER_TEST(TestOptions)
+REGISTER_TEST_CLASS(TestOptions)

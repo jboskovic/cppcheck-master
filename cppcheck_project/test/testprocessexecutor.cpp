@@ -24,6 +24,7 @@
 #include "helpers.h"
 #include "suppressions.h"
 #include "timer.h"
+#include "testmacros.h"
 
 #include <cstdlib>
 #include <list>
@@ -377,4 +378,6 @@ public:
 };
 
 REGISTER_TEST(TestProcessExecutorFiles)
+REGISTER_TEST_CLASS(TestProcessExecutorFiles)
 REGISTER_TEST(TestProcessExecutorFS)
+REGISTER_TEST_CLASS(TestProcessExecutorFS)

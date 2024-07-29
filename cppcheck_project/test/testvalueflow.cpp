@@ -24,6 +24,7 @@
 #include "token.h"
 #include "tokenize.h"
 #include "vfvalue.h"
+#include "testmacros.h"
 
 #include <algorithm>
 #include <climits>
@@ -8519,3 +8520,4 @@ private:
 };
 
 REGISTER_TEST(TestValueFlow)
+REGISTER_TEST_CLASS(TestValueFlow)

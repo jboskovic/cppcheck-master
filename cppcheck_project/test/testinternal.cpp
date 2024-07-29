@@ -22,6 +22,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestInternal : public TestFixture {
 public:
@@ -523,5 +524,6 @@ private:
 };
 
 REGISTER_TEST(TestInternal)
+REGISTER_TEST_CLASS(TestInternal)
 
 #endif // #ifdef CHECK_INTERNAL

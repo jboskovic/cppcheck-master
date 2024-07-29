@@ -21,6 +21,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestVaarg : public TestFixture {
 public:
@@ -357,3 +358,4 @@ private:
 };
 
 REGISTER_TEST(TestVaarg)
+REGISTER_TEST_CLASS(TestVaarg)

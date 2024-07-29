@@ -27,6 +27,7 @@
 #include "token.h"
 #include "tokenize.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <cstring>
 #include <list>
@@ -8057,3 +8058,4 @@ private:
 };
 
 REGISTER_TEST(TestTokenizer)
+REGISTER_TEST_CLASS(TestTokenizer)

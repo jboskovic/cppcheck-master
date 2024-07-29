@@ -24,6 +24,7 @@
 #include "symboldatabase.h"
 #include "token.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <cstring>
 
@@ -489,3 +490,4 @@ private:
 };
 
 REGISTER_TEST(TestAstUtils)
+REGISTER_TEST_CLASS(TestAstUtils)

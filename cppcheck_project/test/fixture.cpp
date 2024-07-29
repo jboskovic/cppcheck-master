@@ -89,7 +89,7 @@ TestFixture::TestFixture(const char * const _name)
     TestRegistry::theInstance().addTest(this);
 }
 
-bool TestFixture::prepareTestForCoverage(const char testname[]){
+bool TestFixture::prepareTestForCoverage(std::string testname){
     std::string testDir = "./coverage_per_test/" + std::string(testname); // Adjust the path as needed
     if (mkdir(testDir.c_str(), 0777) != 0) {
         // If directory creation fails and it's not because the directory exists
@@ -116,7 +116,8 @@ bool TestFixture::prepareTest(const char testname[])
 {
     const char* coverage = std::getenv("COVERAGE");
     if (coverage) {
-        prepareTestForCoverage(testname);
+        std::cout << classname << std::endl;
+        prepareTestForCoverage(classname);
     }
     mVerbose = false;
     mTemplateFormat.clear();
@@ -145,7 +146,6 @@ bool TestFixture::prepareTest(const char testname[])
 void TestFixture::teardownTest()
 {
     teardownTestInternal();
-    __gcov_dump();
     {
         const std::string s = errout_str();
         if (!s.empty())

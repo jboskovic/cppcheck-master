@@ -23,6 +23,7 @@
 #include "platform.h"
 #include "settings.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <limits>
 #include <string>
@@ -6005,3 +6006,4 @@ private:
 };
 
 REGISTER_TEST(TestCondition)
+REGISTER_TEST_CLASS(TestCondition)

@@ -24,6 +24,7 @@
 #include "settings.h"
 #include "tokenize.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <sstream>
 #include <string>
@@ -690,3 +691,4 @@ private:
 };
 
 REGISTER_TEST(TestUnusedFunctions)
+REGISTER_TEST_CLASS(TestUnusedFunctions)

@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "fixture.h"
 #include "standards.h"
+#include "testmacros.h"
 
 #include <string>
 
@@ -435,3 +436,4 @@ private:
 };
 
 REGISTER_TEST(TestPlatform)
+REGISTER_TEST_CLASS(TestPlatform)

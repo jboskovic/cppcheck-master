@@ -19,6 +19,7 @@
 
 #include "analyzerinfo.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <sstream>
 
@@ -44,3 +45,4 @@ private:
 };
 
 REGISTER_TEST(TestAnalyzerInformation)
+REGISTER_TEST_CLASS(TestAnalyzerInformation)

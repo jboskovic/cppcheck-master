@@ -18,6 +18,7 @@
 
 #include "check.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <list>
 #include <string>
@@ -56,3 +57,4 @@ private:
 };
 
 REGISTER_TEST(TestCheck)
+REGISTER_TEST_CLASS(TestCheck)

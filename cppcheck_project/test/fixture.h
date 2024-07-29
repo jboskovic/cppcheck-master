@@ -64,7 +64,7 @@ protected:
     virtual void run() = 0;
 
     bool prepareTest(const char testname[]);
-    bool prepareTestForCoverage(const char testname[]);
+    bool prepareTestForCoverage(std::string testname);
     virtual void prepareTestInternal() {}
     void teardownTest();
     virtual void teardownTestInternal() {}

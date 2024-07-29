@@ -21,6 +21,7 @@
 #include "token.h"
 #include "tokenize.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <cstdint>
 #include <list>
@@ -1368,3 +1369,4 @@ private:
 };
 
 REGISTER_TEST(TestClangImport)
+REGISTER_TEST_CLASS(TestClangImport)

@@ -23,6 +23,7 @@
 #include "settings.h"
 #include "fixture.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <string>
 #include <vector>
@@ -879,3 +880,4 @@ private:
 };
 
 REGISTER_TEST(TestUnusedPrivateFunction)
+REGISTER_TEST_CLASS(TestUnusedPrivateFunction)

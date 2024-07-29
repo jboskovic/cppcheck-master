@@ -18,6 +18,7 @@
 
 #include "pathmatch.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <string>
 #include <utility>
@@ -200,3 +201,4 @@ private:
 };
 
 REGISTER_TEST(TestPathMatch)
+REGISTER_TEST_CLASS(TestPathMatch)

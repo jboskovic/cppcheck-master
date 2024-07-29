@@ -21,6 +21,7 @@
 #include "token.h"
 #include "tokenrange.h"
 #include "symboldatabase.h"
+#include "testmacros.h"
 
 #include <algorithm>
 #include <iterator>
@@ -129,3 +130,4 @@ private:
 };
 
 REGISTER_TEST(TestTokenRange)
+REGISTER_TEST_CLASS(TestTokenRange)

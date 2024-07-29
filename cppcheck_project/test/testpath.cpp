@@ -20,6 +20,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "standards.h"
+#include "testmacros.h"
 
 #include <set>
 #include <string>
@@ -384,3 +385,4 @@ private:
 };
 
 REGISTER_TEST(TestPath)
+REGISTER_TEST_CLASS(TestPath)

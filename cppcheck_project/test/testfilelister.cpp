@@ -21,6 +21,7 @@
 #include "path.h"
 #include "pathmatch.h"
 #include "fixture.h"
+#include "testmacros.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -125,3 +126,4 @@ private:
 };
 
 REGISTER_TEST(TestFileLister)
+REGISTER_TEST_CLASS(TestFileLister)

@@ -22,6 +22,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 #include <list>
 #include <string>
@@ -7908,3 +7909,4 @@ private:
 };
 
 REGISTER_TEST(TestUninitVar)
+REGISTER_TEST_CLASS(TestUninitVar)

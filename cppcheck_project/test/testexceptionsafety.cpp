@@ -21,6 +21,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestExceptionSafety : public TestFixture {
 public:
@@ -449,3 +450,4 @@ private:
 };
 
 REGISTER_TEST(TestExceptionSafety)
+REGISTER_TEST_CLASS(TestExceptionSafety)

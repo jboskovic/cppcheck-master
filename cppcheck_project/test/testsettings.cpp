@@ -22,6 +22,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "suppressions.h"
+#include "testmacros.h"
 
 
 
@@ -278,3 +279,4 @@ private:
 };
 
 REGISTER_TEST(TestSettings)
+REGISTER_TEST_CLASS(TestSettings)

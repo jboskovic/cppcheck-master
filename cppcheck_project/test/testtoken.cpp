@@ -22,6 +22,7 @@
 #include "token.h"
 #include "tokenlist.h"
 #include "vfvalue.h"
+#include "testmacros.h"
 
 #include <algorithm>
 #include <string>
@@ -1197,3 +1198,4 @@ private:
 };
 
 REGISTER_TEST(TestToken)
+REGISTER_TEST_CLASS(TestToken)

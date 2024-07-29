@@ -21,6 +21,7 @@
 #include "helpers.h"
 #include "settings.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <string>
 #include <vector>
@@ -3074,6 +3075,7 @@ private:
 };
 
 REGISTER_TEST(TestLeakAutoVar)
+REGISTER_TEST_CLASS(TestLeakAutoVar)
 
 class TestLeakAutoVarRecursiveCountLimit : public TestFixture {
 public:
@@ -3122,6 +3124,7 @@ private:
 #if !defined(__MINGW32__)
 // TODO: this crashes with a stack overflow for MinGW in the CI
 REGISTER_TEST(TestLeakAutoVarRecursiveCountLimit)
+REGISTER_TEST_CLASS(TestLeakAutoVarRecursiveCountLimit)
 #endif
 
 class TestLeakAutoVarStrcpy : public TestFixture {
@@ -3225,6 +3228,7 @@ private:
 };
 
 REGISTER_TEST(TestLeakAutoVarStrcpy)
+REGISTER_TEST_CLASS(TestLeakAutoVarStrcpy)
 
 
 class TestLeakAutoVarWindows : public TestFixture {
@@ -3297,6 +3301,7 @@ private:
 };
 
 REGISTER_TEST(TestLeakAutoVarWindows)
+REGISTER_TEST_CLASS(TestLeakAutoVarWindows)
 
 class TestLeakAutoVarPosix : public TestFixture {
 public:
@@ -3329,3 +3334,4 @@ private:
 };
 
 REGISTER_TEST(TestLeakAutoVarPosix)
+REGISTER_TEST_CLASS(TestLeakAutoVarPosix)

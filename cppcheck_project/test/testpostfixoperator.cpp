@@ -21,6 +21,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestPostfixOperator : public TestFixture {
 public:
@@ -380,3 +381,4 @@ private:
 };
 
 REGISTER_TEST(TestPostfixOperator)
+REGISTER_TEST_CLASS(TestPostfixOperator)

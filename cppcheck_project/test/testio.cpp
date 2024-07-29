@@ -23,6 +23,7 @@
 #include "helpers.h"
 #include "platform.h"
 #include "settings.h"
+#include "testmacros.h"
 
 #include <string>
 
@@ -4917,3 +4918,4 @@ private:
 };
 
 REGISTER_TEST(TestIO)
+REGISTER_TEST_CLASS(TestIO)

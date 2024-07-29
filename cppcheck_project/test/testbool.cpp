@@ -21,6 +21,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 class TestBool : public TestFixture {
 public:
@@ -1384,3 +1385,4 @@ private:
 };
 
 REGISTER_TEST(TestBool)
+REGISTER_TEST_CLASS(TestBool)

@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "options.h"
+#include <cstring>
 
 options::options(int argc, const char* const argv[])
     : mWhichTests(argv + 1, argv + argc)
@@ -22,6 +23,7 @@ options::options(int argc, const char* const argv[])
     ,mHelp(mWhichTests.count("-h") != 0 || mWhichTests.count("--help"))
     ,mSummary(mWhichTests.count("-n") == 0)
     ,mDryRun(mWhichTests.count("-d") != 0)
+    ,mListClasses(false)  
     ,mExe(argv[0])
 {
     for (std::set<std::string>::const_iterator it = mWhichTests.cbegin(); it != mWhichTests.cend();) {
@@ -29,6 +31,13 @@ options::options(int argc, const char* const argv[])
             it = mWhichTests.erase(it);
         else
             ++it;
+    }
+
+    // Check for the --list-classes option
+    for (int i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--list-classes") == 0) {
+            mListClasses = true;
+        }
     }
 
     if (mWhichTests.empty()) {
@@ -64,4 +73,8 @@ const std::set<std::string>& options::which_test() const
 const std::string& options::exe() const
 {
     return mExe;
+}
+
+bool options::listClasses() const {  // Implement the new method
+    return mListClasses;
 }

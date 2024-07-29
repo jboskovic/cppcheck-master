@@ -26,6 +26,7 @@
 #include "settings.h"
 #include "token.h"
 #include "tokenize.h"
+#include "testmacros.h"
 
 #include <list>
 #include <map>
@@ -4593,3 +4594,4 @@ private:
 };
 
 REGISTER_TEST(TestNullPointer)
+REGISTER_TEST_CLASS(TestNullPointer)

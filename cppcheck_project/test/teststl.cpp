@@ -23,6 +23,7 @@
 #include "settings.h"
 #include "standards.h"
 #include "utils.h"
+#include "testmacros.h"
 
 #include <cstddef>
 #include <string>
@@ -6883,3 +6884,4 @@ private:
 };
 
 REGISTER_TEST(TestStl)
+REGISTER_TEST_CLASS(TestStl)

@@ -24,6 +24,7 @@
 #include "standards.h"
 #include "token.h"
 #include "tokenlist.h"
+#include "testmacros.h"
 
 #include <cstddef>
 #include <map>
@@ -1075,3 +1076,4 @@ private:
 };
 
 REGISTER_TEST(TestLibrary)
+REGISTER_TEST_CLASS(TestLibrary)

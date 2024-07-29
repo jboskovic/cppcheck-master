@@ -32,6 +32,7 @@
 #include "fixture.h"
 #include "timer.h"
 #include "utils.h"
+#include "testmacros.h"
 
 #include <cstdio>
 #include <list>
@@ -2747,3 +2748,4 @@ private:
 };
 
 REGISTER_TEST(TestCmdlineParser)
+REGISTER_TEST_CLASS(TestCmdlineParser)

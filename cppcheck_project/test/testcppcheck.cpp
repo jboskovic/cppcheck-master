@@ -23,6 +23,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "settings.h"
+#include "testmacros.h"
 
 #include "simplecpp.h"
 
@@ -227,3 +228,4 @@ private:
 };
 
 REGISTER_TEST(TestCppcheck)
+REGISTER_TEST_CLASS(TestCppcheck)

@@ -19,6 +19,7 @@
 #include "fixture.h"
 #include "helpers.h"
 #include "summaries.h"
+#include "testmacros.h"
 
 #include <string>
 
@@ -56,3 +57,4 @@ private:
 };
 
 REGISTER_TEST(TestSummaries)
+REGISTER_TEST_CLASS(TestSummaries)

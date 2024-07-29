@@ -18,6 +18,7 @@
 
 #include "fixture.h"
 #include "timer.h"
+#include "testmacros.h"
 
 #include <cmath>
 #include <ctime>
@@ -43,3 +44,4 @@ private:
 };
 
 REGISTER_TEST(TestTimer)
+REGISTER_TEST_CLASS(TestTimer)
