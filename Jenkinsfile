@@ -1,11 +1,18 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out from Git...'
+                // Replace with your repository URL and branch
+                git branch: 'main', url: 'https://github.com/jboskovic/cppcheck-master.git'
+            }
+        }
         stage('Build') {
             steps {
                 // Add build commands here
                 echo 'Building..'
-                sh 'cd cppcheck_project && make clean &&  make COVERAGE=1'
+                sh 'cd cppcheck_project &&  make COVERAGE=1'
             }
         }
         stage('Test') {
@@ -20,7 +27,7 @@ pipeline {
         stage("Collecting") {
             steps {
                 echo "Get code coverage collection..."
-                sh 'cd cppcheck_project && python3 ./coverage_tool/collectData.py --sha 612e3d8052f9083609d5b372518869fbeeb62a3d --branch-name main'
+                sh 'cd cppcheck_project && python3 ../coverage_tool/collectData.py --sha 612e3d8052f9083609d5b372518869fbeeb62a3d --branch-name main -j8'
             }
         }
     }
