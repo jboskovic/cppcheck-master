@@ -6,6 +6,11 @@ pipeline {
                 echo 'Checking out from Git...'
                 // Replace with your repository URL and branch
                 git branch: 'main', url: 'https://github.com/jboskovic/cppcheck-master.git'
+                // Get the Git SHA of the checked-out commit
+                script {
+                    GIT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    echo "Checked out commit: ${GIT_SHA}"
+                }
             }
         }
         stage('Build') {
@@ -27,7 +32,7 @@ pipeline {
         stage("Collecting") {
             steps {
                 echo "Get code coverage collection..."
-                sh 'cd cppcheck_project && python3 ../coverage_tool/collectData.py --sha 612e3d8052f9083609d5b372518869fbeeb62a3d --branch-name main -j8'
+                sh 'cd cppcheck_project && python3 ../coverage_tool/collectData.py --sha ${GIT_SHA} --branch-name main -j8'
             }
         }
     }
