@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo 'Checking out from Git...'
                 // Replace with your repository URL and branch
-                git branch: 'main', url: 'https://github.com/jboskovic/cppcheck-master.git'
+                git branch: 'main', url: 'https://github.com/jboskovic/cppcheck-master.git', credentialsId: '679ff6bd-0a24-4d34-a52b-3e6f97ef64a3'
                 // Get the Git SHA of the checked-out commit
                 script {
                     GIT_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
