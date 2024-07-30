@@ -1,6 +1,12 @@
 pipeline {
     agent any
     stages {
+        stage('Prepare Workspace') {
+            steps {
+                echo 'Clearing workspace...'
+                deleteDir() // Clear the workspace
+            }
+        }
         stage('Checkout') {
             steps {
                 echo 'Checking out from Git...'
