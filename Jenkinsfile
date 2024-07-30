@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    options {
+        skipDefaultCheckout true // Skip the default checkout
+    }
     stages {
         stage('Prepare Workspace') {
             steps {
