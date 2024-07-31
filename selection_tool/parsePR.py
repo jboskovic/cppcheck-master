@@ -19,7 +19,7 @@ class ParsePR:
     def get_changed_files(self):
         try:
             changed_files_call = subprocess_call(
-                'git --no-pager diff --name-only `git merge-base origin/main HEAD`'.format)
+                'git --no-pager diff --name-only `git merge-base origin/main HEAD`')
         except Exception as e:
             exit_with_message(f'Getting changed files with diff failed with {e}')
 
