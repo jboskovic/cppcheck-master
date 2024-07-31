@@ -5,7 +5,7 @@ import os
 class ParsePR:
     def __init__(self):
         self.baseline = self.get_baseline_of_PR()
-        self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c", ".hpp"))
+        self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
 
     def get_baseline_of_PR(self):
@@ -73,9 +73,12 @@ class ParsePR:
                 line = line.strip()
                 if line.startswith('+++ '):
                     file_name = line.split('+++ ')[1][2:].strip()
+                    print("FILE NAME ", file_name)
                     if not self.check_if_ext(file_name, coverage_extensions):
+                        print("FILE NOT COVERED")
                         file_is_covered_with_coverage = False
                     else:
+                        print("FILE COVERED")
                         file_is_covered_with_coverage = True
                 elif ' @@ ' in line and file_is_covered_with_coverage:
                     change = line.split(' @@ ')[1].strip()
