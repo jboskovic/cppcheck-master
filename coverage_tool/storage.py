@@ -6,7 +6,7 @@ from helper_functions import subprocess_call, exit_with_message, write_json
 
 
 
-coverage_location_jenkins_path_base = '../collections/'
+coverage_location_jenkins_path_base = '../../collections/'
 
 def format_git_sha_date(sha):
     try:
