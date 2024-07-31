@@ -56,7 +56,7 @@ class ParsePR:
         git_diff_output_file = 'git_diff_output.txt'
         try:
             subprocess_call(
-                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.npl\' \'*.c\' \'*.hpp\' > {}'.format(git_diff_output_file))
+                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.c\' > {}'.format(git_diff_output_file))
         except Exception as e:
             exit_with_message(f"Getting chagned files from PR failed {e}")
 
