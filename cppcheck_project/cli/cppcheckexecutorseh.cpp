@@ -51,7 +51,6 @@ namespace {
 // avoid explicit dependency on Dbghelp.dll
     bool loadDbgHelp()
     {
-        // comment
         hLibDbgHelp = ::LoadLibraryW(L"Dbghelp.dll");
         if (!hLibDbgHelp)
             return false;
@@ -70,6 +69,7 @@ namespace {
     {
         if (!loadDbgHelp())
             return;
+        // comment
         const HANDLE hProcess   = GetCurrentProcess();
         const HANDLE hThread    = GetCurrentThread();
         pSymInitialize(
