@@ -91,17 +91,11 @@ class ParsePR:
                         collected_changes['has_h_changes_without_cpp_changes'] = False
                         if '(' in change:
                             change = change.split('(')[0]
-                            self.insert_change_for_file('functions', file_name, change, collected_changes)
-                        else:
-                            self.insert_change_for_file('others', file_name, change, collected_changes)
-                    elif file_name.endswith('.h') or file_name.endswith('.hpp'):
+                    else:
                         if collected_changes['has_h_changes_without_cpp_changes'] is None:
                             collected_changes['has_h_changes_without_cpp_changes'] = True
                         if '(' in change:
                             change = change.split('(')[0]
-                        self.insert_change_for_file('functions', file_name, change, collected_changes)
-                    else:
-                        self.insert_change_for_file('others', file_name, change, collected_changes)
 
         self.remove_duplicates_from_collected_changes(collected_changes)
         if collected_changes['has_h_changes_without_cpp_changes'] is None or collected_changes['functions'] != {}:
@@ -114,14 +108,3 @@ class ParsePR:
             for file_name in collected_changes[type_of_change].keys():
                 collected_changes[type_of_change][file_name] = list(set(collected_changes[type_of_change][file_name]))
 
-    # for every file that links to file_name set change
-    def insert_change_for_file(self, type_of_change, file_name, change, collected_changes):
-        # for given path get all the files that are linked to it
-        linked = []
-        if file_name in self.links:
-            linked.extend(self.links[file_name])
-        linked.append(file_name)
-        for file in linked:
-            if file not in collected_changes[type_of_change]:
-                collected_changes[type_of_change][file] = []
-            collected_changes[type_of_change][file].append(change)
