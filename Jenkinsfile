@@ -44,7 +44,7 @@ pipeline {
         stage("Collecting") {
             steps {
                 echo "Get code coverage collection..."
-                sh "python3 selection_tool/coverage_tool/collectData.py --sha ${GIT_SHA} -j8"
+                sh "cd cppcheck_project && python3 ../selection_tool/coverage_tool/collectData.py --sha ${GIT_SHA} -j8"
             }
         }
     }
