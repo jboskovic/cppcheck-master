@@ -49,7 +49,7 @@ class CoverageData:
 
         self.default_empty_output = []
 
-        self.default_output = ["type" : "all"]
+        self.default_output = {"type" : "all"}
 
         self.representative_tests = 'representative tests'
 
