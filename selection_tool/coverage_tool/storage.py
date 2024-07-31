@@ -2,7 +2,7 @@ from multiprocessing import Manager, Queue, Lock
 from queue import Empty
 from datetime import datetime
 import os
-from selection_tool.helper_functions import subprocess_call, exit_with_message, write_json
+from helper_functions import subprocess_call, exit_with_message, write_json
 
 
 

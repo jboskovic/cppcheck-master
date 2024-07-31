@@ -29,7 +29,7 @@ pipeline {
             steps {
                 // Add build commands here
                 echo "Selecting relevant tests.."
-                sh "python3 ./selection_tool/selectRelevantTests.py"
+                sh "python3 selection_tool/selectRelevantTests.py"
             }
         }
     }

@@ -3,7 +3,7 @@ import re
 import queue
 import time
 import os
-from selection_tool.helper_functions import subprocess_call, exit_with_message
+from helper_functions import subprocess_call, exit_with_message
 
 
 class Collector:
