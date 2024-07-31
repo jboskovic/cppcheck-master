@@ -14,7 +14,7 @@ class SelectRelevantTests:
         print('\n###################################')
         print('Coverage decision tool run start...')
         print('###################################\n')
-        self.coverage_tool = CoverageData(input_for_coverage_tool, self.parser.baseline, False)
+        self.coverage_tool = CoverageData(input_for_coverage_tool, self.parser.baseline)
         print("Coverage decision tool run finished successfully!\n")
         print('###################################')
         print("Selecteed tests")
