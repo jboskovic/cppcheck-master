@@ -3,8 +3,7 @@ import os
 
 
 class ParsePR:
-    def __init__(self, branch_name):
-        self.branch_name = branch_name
+    def __init__(self):
         self.baseline = self.get_baseline_of_PR()
         self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c", ".hpp"))
         self.changed_files = self.get_changed_files_from_PR()
@@ -12,7 +11,7 @@ class ParsePR:
     def get_baseline_of_PR(self):
         try:
             git_baseline_call = subprocess_call(
-                'git log -n 1 `git merge-base origin/{} HEAD`  --format=format:%H'.format(self.branch_name))
+                'git log -n 1 `git merge-base origin/main HEAD`  --format=format:%H')
         except Exception as e:
             exit_with_message(f'Getting baseline of the PR failed with {e}')
         return git_baseline_call.stdout
@@ -20,7 +19,7 @@ class ParsePR:
     def get_changed_files(self):
         try:
             changed_files_call = subprocess_call(
-                'git --no-pager diff --name-only `git merge-base origin/{} HEAD`'.format(self.branch_name))
+                'git --no-pager diff --name-only `git merge-base origin/main HEAD`'.format)
         except Exception as e:
             exit_with_message(f'Getting changed files with diff failed with {e}')
 
@@ -57,8 +56,7 @@ class ParsePR:
         git_diff_output_file = 'git_diff_output.txt'
         try:
             subprocess_call(
-                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/{} HEAD` -- \'*.cpp\' \'*.h\' \'*.npl\' \'*.c\' \'*.hpp\' > {}'.format(
-                    self.branch_name, git_diff_output_file))
+                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.npl\' \'*.c\' \'*.hpp\' > {}'.format(git_diff_output_file))
         except Exception as e:
             exit_with_message(f"Getting chagned files from PR failed {e}")
 

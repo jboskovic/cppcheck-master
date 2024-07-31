@@ -19,14 +19,14 @@ def get_name_of_directories_in_directory(directory):
     return directories_names
 
 
-def get_all_directories_on_jenksins_for_branch(branch_name):
-    coverage_location_for_branch = coverage_location_jenkins_path_base + '/' + branch_name
+def get_all_directories_on_jenksins_for_branch():
+    coverage_location_for_branch = coverage_location_jenkins_path_base + '/main'
     isExist = os.path.exists(coverage_location_for_branch)
     if isExist:
         shas_from_directory = get_name_of_directories_in_directory(coverage_location_for_branch)
         return shas_from_directory
     else:
-        print("Directory for branch {} doesn't exit".format(branch_name))
+        print("Directory for branch nain doesn't exit")
         return None
 
 def is_date_older_then_limit(collection_date, pr_date, limit):
@@ -37,9 +37,8 @@ def is_date_older_then_limit(collection_date, pr_date, limit):
 
 
 class CoverageData:
-    def __init__(self, changes_map, baseline, branch_name):
+    def __init__(self, changes_map, baseline):
         self.changes_map = changes_map
-        self.branch_name = branch_name
         self.baseline = baseline
 
         self.supported_branches = ['master']
@@ -58,12 +57,6 @@ class CoverageData:
         self.update_changed_files_without_coverage_output()
 
     def get_relevant_tests(self):
-        if self.branch_name not in self.supported_branches:
-            print(
-                "Target branch {} is not supported branch {}. Run everything.".format(
-                    self.branch_name,
-                    self.supported_branches))
-            return self.default_output
         if not self.has_list_of_changes():
             print("No changes in relevant covered files. Nothing to be run using Coverage Data")
             return self.default_empty_output
@@ -105,7 +98,7 @@ class CoverageData:
         date_of_baseline_sha = convert_string_to_datetime(date_of_baseline_sha_string)
         print("Date {} for baseline {}".format(date_of_baseline_sha, self.baseline))
 
-        directories_from_jenkins = get_all_directories_on_jenksins_for_branch(self.branch_name)
+        directories_from_jenkins = get_all_directories_on_jenksins_for_branch("main")
         if directories_from_jenkins is None:
             return None
 
@@ -129,7 +122,7 @@ class CoverageData:
                             self.LIMIT_FOR_AGE_OF_COLLECTION))
                     break
                 directory_for_collection = coverage_location_jenkins_path_base + \
-                    '/' + self.branch_name + '/' + directory_for_collection_sha
+                    '/main/' + directory_for_collection_sha
 
 
                 if 'tmp_' in directory_for_collection:
