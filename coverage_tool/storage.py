@@ -19,9 +19,8 @@ def format_git_sha_date(sha):
 
 class Storage:
 
-    def __init__(self, tests, sha, branch_name):
+    def __init__(self, tests, sha):
         self._sha = sha
-        self._branch_name = branch_name
         self._manager = Manager()
 
         self._tests_indexed = self._manager.dict()
@@ -73,9 +72,9 @@ class Storage:
 
         print(coverage_location_jenkins_path_base)
         print(format_for_directory)
-        self.dir_name_tmp = "{}/{}/tmp_{}/".format(coverage_location_jenkins_path_base, self._branch_name,
+        self.dir_name_tmp = "{}/main/tmp_{}/".format(coverage_location_jenkins_path_base,
                                                     format_for_directory)
-        self.dir_name = "{}/{}/{}".format(coverage_location_jenkins_path_base, self._branch_name,
+        self.dir_name = "{}/main/{}".format(coverage_location_jenkins_path_base,
                                             format_for_directory)
 
         print("Name of the directory {} where to store collection for the sha {} ".format(self.dir_name_tmp, self._sha))

@@ -12,12 +12,6 @@ def parse_args(command_line_options):
 
     argparser = argparse.ArgumentParser(description='For executed test files run gcov')
     argparser.add_argument('--sha', dest='sha', type=str, action='store', help="Set sha for which we are running the collection")
-    argparser.add_argument(
-        '--branch-name',
-        dest='branch_name',
-        type=str,
-        action='store',
-        help="Define branch name, master or some lts branch")
     argparser.add_argument('-j', dest='j', type=int, default=1, action='store',
                            help="Define parallelization number")
     argparser.add_argument('--dont-delete-gcda-files', dest='dont_delete_gcda', action='store_true', default=False,
@@ -42,7 +36,7 @@ if __name__ == '__main__':
     # get all executed test files
     tests = from_gcda_dir_path_collect_test_names()
     # object Storage is multiprocess safe and is used for storing collected data
-    storage = Storage(tests, args.sha, args.branch_name)
+    storage = Storage(tests, args.sha)
 
     # object Collector is used for collecting the data in parallel
     collector = Collector(storage, args.dont_delete_gcda, coverage_dir)
