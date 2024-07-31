@@ -1,4 +1,4 @@
-from ..coverage_tool.helper_functions import *
+from helper_functions import *
 import os
 
 

@@ -1,7 +1,6 @@
 from parsePR import ParsePR
 from useCoverageData import CoverageData
-from ..coverage_tool.helper_functions import *
-import sys
+from helper_functions import *
 
 class SelectRelevantTests:
     def __init__(self):

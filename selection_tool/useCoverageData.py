@@ -1,7 +1,7 @@
-from ..coverage_tool.helper_functions import *
+from helper_functions import *
 import os
 from pathlib import Path
-from ..coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
+from coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
 from datetime import datetime, timedelta
 
 def convert_string_to_datetime(date_string):
