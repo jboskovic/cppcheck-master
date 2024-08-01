@@ -36,7 +36,7 @@ pipeline {
             steps {
                 // Add build commands here
                 echo "Building.."
-                sh "cd cppcheck_project &&  make COVERAGE=1"
+                sh "cd cppcheck_project &&  make"
             }
         }
          stage('Test') {
@@ -47,7 +47,7 @@ pipeline {
                         testListFile = 'selected_tests.txt'
                     } else {
                         echo "Get list of tests..."
-                        sh "cd cppcheck_project && make testclasses COVERAGE=1"
+                        sh "cd cppcheck_project && make testclasses"
                     }
                     echo "Using test list: ${testListFile}"
                     // Run the tests
