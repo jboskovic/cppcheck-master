@@ -183,7 +183,7 @@ class CoverageData:
             if file_name is None:
                 continue  # file is another device's specific file
             if project_name in file_name:
-                file_name_relative = file_name.split(project_name)[1]
+                file_name_relative = file_name.split(project_name)[1].split('.')[0]
             else:
                 print("File {} not from project {}".format(file_name, project_name))
                 continue
