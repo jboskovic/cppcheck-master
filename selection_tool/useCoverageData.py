@@ -193,7 +193,7 @@ class CoverageData:
                     print("Change is in a structure or enum ", func)
                     file_has_cov_output = True
                     run_default = True
-                    list_of_tests_need_for_run = [self.default_for_device]
+                    list_of_tests_need_for_run = self.default_output
                 else:
                     func_indices = self.get_index_from_change_name(type_name, func)
                     if func_indices is None:
