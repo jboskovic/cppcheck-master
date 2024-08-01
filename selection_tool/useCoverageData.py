@@ -41,7 +41,6 @@ class CoverageData:
         self.changes_map = changes_map
         self.baseline = baseline
 
-        self.supported_branches = ['master']
         # limitation is in days
         self.LIMIT_FOR_AGE_OF_COLLECTION = 14
 
@@ -49,7 +48,7 @@ class CoverageData:
 
         self.default_empty_output = []
 
-        self.default_output = {"type" : "all"}
+        self.default_output = ["all"]
 
         self.representative_tests = 'representative tests'
 
@@ -155,8 +154,20 @@ class CoverageData:
         return collection_mapped
 
     def get_relevant_tests_using_coverage_collection(self):
-        print("Implement getting relevant tests using coverage. Go through functions changed and select tests")
-        return ''
+        if self.path_to_collection_dir_map is None:
+            print("No collection for this PR sha. Run everything.")
+            return self.default_output
+        self.collection_map = self.read_json_collection_to_map()
+        if self.collection_map is None:
+                print("Run everything.")
+                return self.default_output
+        set_of_tests = set()
+        type_name = "functions"
+        tests_from_type = self.get_relevant_tests_for_type(type_name)
+        if tests_from_type is None:
+            print("For {} no tests selected.".format(type_name))
+        set_of_tests |= set(tests_from_type)
+        return set_of_tests
 
     def make_test_paths(self, list_of_tests):
         list_of_test_paths = []
