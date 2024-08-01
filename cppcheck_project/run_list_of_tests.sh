@@ -15,10 +15,24 @@ if [ ! -f "$test_file" ]; then
     exit 1
 fi
 
+# Set COVERAGE environment variable if the second argument is provided
+if [ $# -ge 2 ]; then
+  COVERAGE=1
+else
+  COVERAGE=0
+fi
+
+# Set the CXX environment variable to the third argument if provided, otherwise default to g++
+if [ $# -ge 3 ]; then
+  CXX=$3
+else
+  CXX=g++
+fi
+
 # Read the file and call make test for each test name
 while IFS= read -r test_name; do
     if [ -n "$test_name" ]; then
         echo "Running test: $test_name"
-        make test COVERAGE=1 TESTNAME="$test_name"
+        make test COVERAGE="$COVERAGE" CXX="$CXX" TESTNAME="$test_name"
     fi
 done < "$test_file"

@@ -25,20 +25,20 @@ pipeline {
                 }
             }
         }
-        stage('Select Relevant Tests') {
-            steps {
-                // Add build commands here
-                echo "Selecting relevant tests.."
-                sh "python3 selection_tool/selectRelevantTests.py"
-            }
-        }
         stage('Build') {
             steps {
                 // Add build commands here
                 echo "Building.."
-                sh "cd cppcheck_project &&  make"
+                sh "cd cppcheck_project &&  make CXX=clang++"
             }
         }
+        // stage('Select Relevant Tests') {
+        //     steps {
+        //         // Add build commands here
+        //         echo "Selecting relevant tests.."
+        //         sh "python3 selection_tool/selectRelevantTests.py"
+        //     }
+        // }
          stage('Test') {
             steps {
                 script {
@@ -52,7 +52,7 @@ pipeline {
                     echo "Using test list: ${testListFile}"
                     // Run the tests
                     echo "Testing.."
-                    sh "cd cppcheck_project && bash run_list_of_tests.sh ${testListFile}"
+                    sh "cd cppcheck_project && bash run_list_of_tests.sh coverage clang++ ${testListFile}"
                 }
             }
         }
