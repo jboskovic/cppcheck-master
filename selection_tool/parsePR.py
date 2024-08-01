@@ -94,6 +94,7 @@ class ParsePR:
                         collected_changes['has_h_changes_without_cpp_changes'] = False
                         if '(' in change:
                             change = change.split('(')[0]
+                            print("Change ", change)
                     else:
                         if collected_changes['has_h_changes_without_cpp_changes'] is None:
                             collected_changes['has_h_changes_without_cpp_changes'] = True
