@@ -98,7 +98,7 @@ class CoverageData:
         date_of_baseline_sha = convert_string_to_datetime(date_of_baseline_sha_string)
         print("Date {} for baseline {}".format(date_of_baseline_sha, self.baseline))
 
-        directories_from_jenkins = get_all_directories_on_jenksins_for_branch("main")
+        directories_from_jenkins = get_all_directories_on_jenksins_for_branch()
         if directories_from_jenkins is None:
             return None
 
