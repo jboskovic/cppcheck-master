@@ -183,7 +183,7 @@ class CoverageData:
             if file_name is None:
                 continue  # file is another device's specific file
             if project_name in file_name:
-                file_name_relative = file_name.split(project_name)[1].split('.')[0]
+                file_name_relative = file_name.split(project_name)[1]
             else:
                 print("File {} not from project {}".format(file_name, project_name))
                 continue
@@ -263,27 +263,26 @@ class CoverageData:
 
         return list(set(tests_indexed))
 
-    # given a function/table/control change get index from a mapping
+    # given a function change get index from a mapping
     # if name is not in the collection return None other return list of indices
     # we are looking for a substring in the colleciton
     def get_index_from_change_name(self, type_of_collection, change_name):
         # load map of function/control/table names to index for specific device
         type_to_index = self.collection_map[type_of_collection]['index']
         indices = []
-        # collect indices which whole name of the function/table/control is similar to given name
+        # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
                 change_name = change_name.split('.')[0]
                 if change_name == whole_name:
                     indices.append(index)
             # functions can be generic
-            elif type_of_collection == 'functions':
+            else:
+                if " " in change_name:
+                    change_name = change_name.split(" ")[1]
                 if change_name + '(' in whole_name or change_name + '<' in whole_name:
                     indices.append(index)
-            else:
-                # controls and tables
-                if change_name in whole_name:
-                    indices.append(index)
+
 
         if indices == []:
             return None
