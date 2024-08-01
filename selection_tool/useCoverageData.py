@@ -103,7 +103,7 @@ class CoverageData:
 
         # sort directories by the date
         directories_with_collections_sorted = sorted(directories_from_jenkins, reverse=True)
-        path_to_collections_dir = ''
+        path_to_collection_dir = ''
 
         # find most recent date of the collection for each device
         for directory_for_collection_sha in directories_with_collections_sorted:
@@ -129,7 +129,7 @@ class CoverageData:
                     continue
             
 
-        return path_to_collections_dir
+        return path_to_collection_dir
 
     def read_json_collection_to_map(self):
 
@@ -154,7 +154,7 @@ class CoverageData:
         return collection_mapped
 
     def get_relevant_tests_using_coverage_collection(self):
-        if self.path_to_collection_dir_map is None:
+        if self.path_to_collection_dir is None:
             print("No collection for this PR sha. Run everything.")
             return self.default_output
         self.collection_map = self.read_json_collection_to_map()
