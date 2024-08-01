@@ -94,12 +94,13 @@ class ParsePR:
                         collected_changes['has_h_changes_without_cpp_changes'] = False
                         if '(' in change:
                             change = change.split('(')[0]
-                            print("Change ", change)
                     else:
                         if collected_changes['has_h_changes_without_cpp_changes'] is None:
                             collected_changes['has_h_changes_without_cpp_changes'] = True
                         if '(' in change:
                             change = change.split('(')[0]
+                    collected_changes['functions'] = change
+                    
 
         self.remove_duplicates_from_collected_changes(collected_changes)
         if collected_changes['has_h_changes_without_cpp_changes'] is None or collected_changes['functions'] != {}:
