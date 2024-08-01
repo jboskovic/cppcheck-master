@@ -182,7 +182,11 @@ class CoverageData:
         for file_name, functions in self.changes_map[type_name].items():
             if file_name is None:
                 continue  # file is another device's specific file
-
+            if project_name in file_name:
+                file_name_relative = file_name.split(project_name)[1]
+            else:
+                print("File {} not from project {}".format(file_name, project_name))
+                continue
             file_has_cov_output = False
             for func in functions:
                 if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
@@ -196,7 +200,7 @@ class CoverageData:
                         print("Change {} of type {} is not indexed".format(func, type_name))
                         print("For {} tests are not gonna be selected.".format(func))
                         continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
+                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name_relative)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
                     print("Selected tests for this change {}".format(tests_to_run))
@@ -204,7 +208,7 @@ class CoverageData:
                         list_of_tests_need_for_run += tests_to_run
 
             if file_has_cov_output:
-                self.changed_files_with_coverage_output.append(file_name)
+                self.changed_files_with_coverage_output.append(file_name_relative)
 
         return list_of_tests_need_for_run
 

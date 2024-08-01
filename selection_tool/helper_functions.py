@@ -2,6 +2,8 @@ import sys
 import subprocess as sp
 import json
 
+project_name = "cppcheck_project"
+
 def subprocess_call(command):
     try:
         proc = sp.run(command, shell=True, stderr=sp.PIPE, stdout=sp.PIPE, encoding="UTF-8")
