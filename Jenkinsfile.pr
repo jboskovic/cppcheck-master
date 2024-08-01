@@ -52,7 +52,7 @@ pipeline {
                     echo "Using test list: ${testListFile}"
                     // Run the tests
                     echo "Testing.."
-                    sh "cd cppcheck_project && bash run_list_of_tests.sh clang++ ${testListFile}"
+                    sh "cd cppcheck_project && bash run_list_of_tests.sh ${testListFile} clang++"
                 }
             }
         }
