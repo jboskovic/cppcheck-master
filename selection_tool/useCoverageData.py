@@ -98,13 +98,14 @@ class CoverageData:
         print("Date {} for baseline {}".format(date_of_baseline_sha, self.baseline))
 
         directories_from_jenkins = get_all_directories_on_jenksins_for_branch()
+        print("Directories ", directories_from_jenkins)
         if directories_from_jenkins is None:
             return None
 
         # sort directories by the date
         directories_with_collections_sorted = sorted(directories_from_jenkins, reverse=True)
         path_to_collection_dir = ''
-
+        print("Sorted ", directories_with_collections_sorted)
         # find most recent date of the collection for each device
         for directory_for_collection_sha in directories_with_collections_sorted:
             date_of_collection_sha_string = directory_for_collection_sha.split('_sha_')[0]
@@ -122,13 +123,13 @@ class CoverageData:
                     break
                 directory_for_collection = coverage_location_jenkins_path_base + \
                     '/main/' + directory_for_collection_sha
-
-
+                
                 if 'tmp_' in directory_for_collection:
                     print("Collection {} still not finished, search for next".format(directory_for_collection))
                     continue
-            
 
+                path_to_collection_dir = directory_for_collection
+            
         return path_to_collection_dir
 
     def read_json_collection_to_map(self):
