@@ -15,18 +15,20 @@ if [ ! -f "$test_file" ]; then
     exit 1
 fi
 
-# Set COVERAGE environment variable if the second argument is provided
-if [ $# -ge 2 ]; then
-  COVERAGE=1
-else
-  COVERAGE=0
-fi
+# Initialize COVERAGE and CXX with default values
+COVERAGE=0
+CXX=g++
 
-# Set the CXX environment variable to the third argument if provided, otherwise default to g++
-if [ $# -ge 3 ]; then
-  CXX=$3
-else
-  CXX=g++
+# Set COVERAGE and CXX based on provided arguments
+if [ $# -ge 2 ]; then
+  if [ "$2" == "coverage" ]; then
+    COVERAGE=1
+    if [ $# -ge 3 ]; then
+      CXX=$3
+    fi
+  else
+    CXX=$2
+  fi
 fi
 
 # Read the file and call make test for each test name
