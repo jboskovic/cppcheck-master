@@ -137,7 +137,7 @@ bool ProcessExecutor::handleRead(int rpipe, unsigned int &result, const std::str
     if (bytes_read <= 0) {
         if (errno == EAGAIN)
             return true;
-
+        // comment
         // TODO: log details about failure
 
         // need to increment so a missing pipe (i.e. premature exit of forked process) results in an error exitcode

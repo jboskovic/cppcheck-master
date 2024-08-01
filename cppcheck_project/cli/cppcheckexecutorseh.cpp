@@ -69,6 +69,7 @@ namespace {
     {
         if (!loadDbgHelp())
             return;
+        // comment
         const HANDLE hProcess   = GetCurrentProcess();
         const HANDLE hThread    = GetCurrentThread();
         pSymInitialize(
