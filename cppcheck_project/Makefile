@@ -352,12 +352,12 @@ TESTOBJ ?=     test/fixture.o \
 ###### Targets
 
 cppcheck: $(EXTOBJ) $(LIBOBJ) $(CLIOBJ)
-	g++ $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
 
 all:	cppcheck testrunner
 
 testrunner: $(EXTOBJ) $(TESTOBJ) $(LIBOBJ) cli/executor.o cli/processexecutor.o cli/singleexecutor.o cli/threadexecutor.o cli/cmdlineparser.o cli/cppcheckexecutor.o cli/cppcheckexecutorseh.o cli/signalhandler.o cli/stacktrace.o cli/filelister.o
-	g++ $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
+	$(CXX)  $(CPPFLAGS) $(CXXFLAGS) -o $@ $^ $(LIBS) $(LDFLAGS) $(RDYNAMIC)
 
 TESTNAME ?=
 
