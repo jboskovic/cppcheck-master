@@ -15,10 +15,26 @@ if [ ! -f "$test_file" ]; then
     exit 1
 fi
 
+# Initialize COVERAGE and CXX with default values
+COVERAGE=0
+CXX=g++
+
+# Set COVERAGE and CXX based on provided arguments
+if [ $# -ge 2 ]; then
+  if [ "$2" == "coverage" ]; then
+    COVERAGE=1
+    if [ $# -ge 3 ]; then
+      CXX=$3
+    fi
+  else
+    CXX=$2
+  fi
+fi
+
 # Read the file and call make test for each test name
 while IFS= read -r test_name; do
     if [ -n "$test_name" ]; then
         echo "Running test: $test_name"
-        make test COVERAGE=1 TESTNAME="$test_name"
+        make test COVERAGE="$COVERAGE" CXX="$CXX" TESTNAME="$test_name"
     fi
 done < "$test_file"
