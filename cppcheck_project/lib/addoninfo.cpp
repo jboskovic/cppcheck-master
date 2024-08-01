@@ -53,7 +53,7 @@ static std::string parseAddonInfo(AddonInfo& addoninfo, const picojson::value &j
     }
     if (!json.is<picojson::object>())
         return "Loading " + fileName + " failed. JSON is not an object.";
-    // change
+
     // TODO: remove/complete default value handling for missing fields
     const picojson::object& obj = json.get<picojson::object>();
     {
