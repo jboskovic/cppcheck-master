@@ -1,6 +1,5 @@
 from helper_functions import *
 import os
-from pathlib import Path
 from coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
 from datetime import datetime, timedelta
 
@@ -98,14 +97,12 @@ class CoverageData:
         print("Date {} for baseline {}".format(date_of_baseline_sha, self.baseline))
 
         directories_from_jenkins = get_all_directories_on_jenksins_for_branch()
-        print("Directories ", directories_from_jenkins)
         if directories_from_jenkins is None:
             return None
 
         # sort directories by the date
         directories_with_collections_sorted = sorted(directories_from_jenkins, reverse=True)
         path_to_collection_dir = ''
-        print("Sorted ", directories_with_collections_sorted)
         # find most recent date of the collection for each device
         for directory_for_collection_sha in directories_with_collections_sorted:
             date_of_collection_sha_string = directory_for_collection_sha.split('_sha_')[0]

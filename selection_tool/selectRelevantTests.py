@@ -11,8 +11,9 @@ class SelectRelevantTests:
 
     def call_coverage_decision_tool(self):
         input_for_coverage_tool = self.parser.collected_changes
-        print("INPUT FOR coverage ", input_for_coverage_tool)
-        print("CHanged files ", self.parser.changed_files)
+        print("Changed files ", self.parser.changed_files)
+        print("Collected changes relevant for Code Coverage Tool")
+        print(input_for_coverage_tool)
         print('\n###################################')
         print('Coverage decision tool run start...')
         print('###################################\n')
