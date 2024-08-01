@@ -193,13 +193,13 @@ class CoverageData:
                 else:
                     func_indices = self.get_index_from_change_name(type_name, func)
                     if func_indices is None:
-                        self.print_debug("Change {} of type {} is not indexed".format(func, type_name))
-                        self.print_debug("For {} tests are not gonna be selected.".format(func))
+                        self.print("Change {} of type {} is not indexed".format(func, type_name))
+                        self.print("For {} tests are not gonna be selected.".format(func))
                         continue
                     tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
-                    self.print_debug("Selected tests for this change {}".format(tests_to_run))
+                    self.print("Selected tests for this change {}".format(tests_to_run))
                     if not run_default:
                         list_of_tests_need_for_run += tests_to_run
 
@@ -215,7 +215,7 @@ class CoverageData:
         file_indices = self.get_index_from_change_name('files', file_name)
         file_index = None
         if file_indices is None:
-            self.print_debug("File {} is not indexed".format(file_name))
+            self.print("File {} is not indexed".format(file_name))
             type_to_test_indexed = None
         else:
             if len(file_indices) != 1:
@@ -235,14 +235,14 @@ class CoverageData:
                 name_without_args = type_name.split('(')[0]
 
             if type_to_test_indexed is None:
-                self.print_debug(
+                self.print(
                     "Try searching by function index")
                 tests_indexed = self.search_by_function_index(type_to_test_indexed_per_file, index)
             else:
                 tests_indexed = type_to_test_indexed[str(index)]
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
-            self.print_debug("Type {} with the name {} and index {} selected tests {}".format(
+            self.print("Type {} with the name {} and index {} selected tests {}".format(
                 type_of_collection, name_without_args, index, test_names))
             selected_tests += test_names
 
@@ -311,10 +311,6 @@ class CoverageData:
                 name = type_name
 
         return name
-
-    def print_debug(self, msg):
-        if self.debug:
-            print(msg)
 
     def test_exist(self, test_path):
         return os.path.isfile(test_path)
