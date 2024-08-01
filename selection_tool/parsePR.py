@@ -82,6 +82,10 @@ class ParsePR:
 
                     index_of_curly_bracket = change.find('{')
                     if index_of_curly_bracket != -1:
+                        # skip namespace change
+                        if 'namespace {' in change:
+                            print("Parser collected change in the namespace. Continue")
+                            continue
                         # remove curly bracket
                         change = change[:index_of_curly_bracket]
 
