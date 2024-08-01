@@ -5,7 +5,7 @@ import os
 class ParsePR:
     def __init__(self):
         self.baseline = self.get_baseline_of_PR()
-        self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c", ".hpp"))
+        self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
 
     def get_baseline_of_PR(self):
@@ -73,7 +73,7 @@ class ParsePR:
                 line = line.strip()
                 if line.startswith('+++ '):
                     file_name = line.split('+++ ')[1][2:].strip()
-                    if not self.check_if_ext(file_name, coverage_extensions) or not self.check_if_sdk_file(file_name):
+                    if not self.check_if_ext(file_name, coverage_extensions):
                         file_is_covered_with_coverage = False
                     else:
                         file_is_covered_with_coverage = True
@@ -82,6 +82,10 @@ class ParsePR:
 
                     index_of_curly_bracket = change.find('{')
                     if index_of_curly_bracket != -1:
+                        # skip namespace change
+                        if 'namespace {' in change:
+                            print("Parser collected change in the namespace. Continue")
+                            continue
                         # remove curly bracket
                         change = change[:index_of_curly_bracket]
 
@@ -91,17 +95,16 @@ class ParsePR:
                         collected_changes['has_h_changes_without_cpp_changes'] = False
                         if '(' in change:
                             change = change.split('(')[0]
-                            self.insert_change_for_file('functions', file_name, change, collected_changes)
-                        else:
-                            self.insert_change_for_file('others', file_name, change, collected_changes)
-                    elif file_name.endswith('.h') or file_name.endswith('.hpp'):
+                    else:
                         if collected_changes['has_h_changes_without_cpp_changes'] is None:
                             collected_changes['has_h_changes_without_cpp_changes'] = True
                         if '(' in change:
                             change = change.split('(')[0]
-                        self.insert_change_for_file('functions', file_name, change, collected_changes)
+                    if file_name not in collected_changes['functions']:
+                        collected_changes['functions'][file_name] = [change]
                     else:
-                        self.insert_change_for_file('others', file_name, change, collected_changes)
+                        collected_changes['functions'][file_name].append(change)
+                    
 
         self.remove_duplicates_from_collected_changes(collected_changes)
         if collected_changes['has_h_changes_without_cpp_changes'] is None or collected_changes['functions'] != {}:
@@ -114,14 +117,3 @@ class ParsePR:
             for file_name in collected_changes[type_of_change].keys():
                 collected_changes[type_of_change][file_name] = list(set(collected_changes[type_of_change][file_name]))
 
-    # for every file that links to file_name set change
-    def insert_change_for_file(self, type_of_change, file_name, change, collected_changes):
-        # for given path get all the files that are linked to it
-        linked = []
-        if file_name in self.links:
-            linked.extend(self.links[file_name])
-        linked.append(file_name)
-        for file in linked:
-            if file not in collected_changes[type_of_change]:
-                collected_changes[type_of_change][file] = []
-            collected_changes[type_of_change][file].append(change)

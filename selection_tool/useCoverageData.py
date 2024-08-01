@@ -1,6 +1,5 @@
 from helper_functions import *
 import os
-from pathlib import Path
 from coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
 from datetime import datetime, timedelta
 
@@ -41,7 +40,6 @@ class CoverageData:
         self.changes_map = changes_map
         self.baseline = baseline
 
-        self.supported_branches = ['master']
         # limitation is in days
         self.LIMIT_FOR_AGE_OF_COLLECTION = 14
 
@@ -49,7 +47,7 @@ class CoverageData:
 
         self.default_empty_output = []
 
-        self.default_output = {"type" : "all"}
+        self.default_output = ["all"]
 
         self.representative_tests = 'representative tests'
 
@@ -98,14 +96,13 @@ class CoverageData:
         date_of_baseline_sha = convert_string_to_datetime(date_of_baseline_sha_string)
         print("Date {} for baseline {}".format(date_of_baseline_sha, self.baseline))
 
-        directories_from_jenkins = get_all_directories_on_jenksins_for_branch("main")
+        directories_from_jenkins = get_all_directories_on_jenksins_for_branch()
         if directories_from_jenkins is None:
             return None
 
         # sort directories by the date
         directories_with_collections_sorted = sorted(directories_from_jenkins, reverse=True)
-        path_to_collections_dir = ''
-
+        path_to_collection_dir = ''
         # find most recent date of the collection for each device
         for directory_for_collection_sha in directories_with_collections_sorted:
             date_of_collection_sha_string = directory_for_collection_sha.split('_sha_')[0]
@@ -123,14 +120,14 @@ class CoverageData:
                     break
                 directory_for_collection = coverage_location_jenkins_path_base + \
                     '/main/' + directory_for_collection_sha
-
-
+                
                 if 'tmp_' in directory_for_collection:
                     print("Collection {} still not finished, search for next".format(directory_for_collection))
                     continue
-            
 
-        return path_to_collections_dir
+                path_to_collection_dir = directory_for_collection
+            
+        return path_to_collection_dir
 
     def read_json_collection_to_map(self):
 
@@ -155,8 +152,20 @@ class CoverageData:
         return collection_mapped
 
     def get_relevant_tests_using_coverage_collection(self):
-        print("Implement getting relevant tests using coverage. Go through functions changed and select tests")
-        return ''
+        if self.path_to_collection_dir is None:
+            print("No collection for this PR sha. Run everything.")
+            return self.default_output
+        self.collection_map = self.read_json_collection_to_map()
+        if self.collection_map is None:
+                print("Run everything.")
+                return self.default_output
+        set_of_tests = set()
+        type_name = "functions"
+        tests_from_type = self.get_relevant_tests_for_type(type_name)
+        if tests_from_type is None:
+            print("For {} no tests selected.".format(type_name))
+        set_of_tests |= set(tests_from_type)
+        return set_of_tests
 
     def make_test_paths(self, list_of_tests):
         list_of_test_paths = []
@@ -168,32 +177,35 @@ class CoverageData:
         list_of_tests_need_for_run = []
         run_default = False
         for file_name, functions in self.changes_map[type_name].items():
-            rel_file_name = self.relative_file_path(file_name, type_name)
-            if rel_file_name is None:
+            if file_name is None:
                 continue  # file is another device's specific file
-
+            if project_name in file_name:
+                file_name_relative = file_name.split(project_name)[1]
+            else:
+                print("File {} not from project {}".format(file_name, project_name))
+                continue
             file_has_cov_output = False
             for func in functions:
                 if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
                     print("Change is in a structure or enum ", func)
                     file_has_cov_output = True
                     run_default = True
-                    list_of_tests_need_for_run = [self.default_for_device]
+                    list_of_tests_need_for_run = self.default_output
                 else:
                     func_indices = self.get_index_from_change_name(type_name, func)
                     if func_indices is None:
-                        self.print_debug("Change {} of type {} is not indexed".format(func, type_name))
-                        self.print_debug("For {} tests are not gonna be selected.".format(func))
+                        print("Change {} of type {} is not indexed".format(func, type_name))
+                        print("For {} tests are not gonna be selected.".format(func))
                         continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, rel_file_name)
+                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name_relative)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
-                    self.print_debug("Selected tests for this change {}".format(tests_to_run))
+                    print("Selected tests for this change {}".format(tests_to_run))
                     if not run_default:
                         list_of_tests_need_for_run += tests_to_run
 
             if file_has_cov_output:
-                self.changed_files_with_coverage_output.append(file_name)
+                self.changed_files_with_coverage_output.append(file_name_relative)
 
         return list_of_tests_need_for_run
 
@@ -204,7 +216,7 @@ class CoverageData:
         file_indices = self.get_index_from_change_name('files', file_name)
         file_index = None
         if file_indices is None:
-            self.print_debug("File {} is not indexed".format(file_name))
+            print("File {} is not indexed".format(file_name))
             type_to_test_indexed = None
         else:
             if len(file_indices) != 1:
@@ -224,14 +236,14 @@ class CoverageData:
                 name_without_args = type_name.split('(')[0]
 
             if type_to_test_indexed is None:
-                self.print_debug(
+                print(
                     "Try searching by function index")
                 tests_indexed = self.search_by_function_index(type_to_test_indexed_per_file, index)
             else:
                 tests_indexed = type_to_test_indexed[str(index)]
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
-            self.print_debug("Type {} with the name {} and index {} selected tests {}".format(
+            print("Type {} with the name {} and index {} selected tests {}".format(
                 type_of_collection, name_without_args, index, test_names))
             selected_tests += test_names
 
@@ -248,27 +260,26 @@ class CoverageData:
 
         return list(set(tests_indexed))
 
-    # given a function/table/control change get index from a mapping
+    # given a function change get index from a mapping
     # if name is not in the collection return None other return list of indices
     # we are looking for a substring in the colleciton
     def get_index_from_change_name(self, type_of_collection, change_name):
         # load map of function/control/table names to index for specific device
         type_to_index = self.collection_map[type_of_collection]['index']
         indices = []
-        # collect indices which whole name of the function/table/control is similar to given name
+        # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
                 change_name = change_name.split('.')[0]
                 if change_name == whole_name:
                     indices.append(index)
             # functions can be generic
-            elif type_of_collection == 'functions':
+            else:
+                if " " in change_name:
+                    change_name = change_name.split(" ")[1]
                 if change_name + '(' in whole_name or change_name + '<' in whole_name:
                     indices.append(index)
-            else:
-                # controls and tables
-                if change_name in whole_name:
-                    indices.append(index)
+
 
         if indices == []:
             return None
@@ -281,11 +292,9 @@ class CoverageData:
             test_name = self.convert_index_to_name('test', test_index)
             if test_name == '':
                 print('No test name for index ', test_index)
-            else:
-                if self.test_exist(test_name):
-                    test_names.append(test_name)
-                else:
-                    print("Test with the name {} doesn't exist ".format(test_name))
+                continue
+            test_names.append(test_name)
+       
         return test_names
 
     def convert_index_to_name(self, type_of_collection, index):
@@ -300,10 +309,6 @@ class CoverageData:
                 name = type_name
 
         return name
-
-    def print_debug(self, msg):
-        if self.debug:
-            print(msg)
 
     def test_exist(self, test_path):
         return os.path.isfile(test_path)
