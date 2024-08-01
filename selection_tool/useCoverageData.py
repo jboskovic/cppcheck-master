@@ -295,11 +295,9 @@ class CoverageData:
             test_name = self.convert_index_to_name('test', test_index)
             if test_name == '':
                 print('No test name for index ', test_index)
-            else:
-                if self.test_exist(test_name):
-                    test_names.append(test_name)
-                else:
-                    print("Test with the name {} doesn't exist ".format(test_name))
+                continue
+            test_names.append(test_name)
+       
         return test_names
 
     def convert_index_to_name(self, type_of_collection, index):
