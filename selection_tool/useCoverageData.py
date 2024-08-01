@@ -180,8 +180,7 @@ class CoverageData:
         list_of_tests_need_for_run = []
         run_default = False
         for file_name, functions in self.changes_map[type_name].items():
-            rel_file_name = self.relative_file_path(file_name, type_name)
-            if rel_file_name is None:
+            if file_name is None:
                 continue  # file is another device's specific file
 
             file_has_cov_output = False
@@ -197,7 +196,7 @@ class CoverageData:
                         self.print_debug("Change {} of type {} is not indexed".format(func, type_name))
                         self.print_debug("For {} tests are not gonna be selected.".format(func))
                         continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, rel_file_name)
+                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
                     self.print_debug("Selected tests for this change {}".format(tests_to_run))
