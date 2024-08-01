@@ -99,7 +99,10 @@ class ParsePR:
                             collected_changes['has_h_changes_without_cpp_changes'] = True
                         if '(' in change:
                             change = change.split('(')[0]
-                    collected_changes['functions'] = change
+                    if file_name not in collected_changes['functions']:
+                        collected_changes['functions'][file_name] = [change]
+                    else:
+                        collected_changes['functions'][file_name].append(change)
                     
 
         self.remove_duplicates_from_collected_changes(collected_changes)
