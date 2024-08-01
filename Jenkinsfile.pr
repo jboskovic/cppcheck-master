@@ -32,5 +32,27 @@ pipeline {
                 sh "python3 selection_tool/selectRelevantTests.py"
             }
         }
+        stage('Build') {
+            steps {
+                // Add build commands here
+                echo "Building.."
+                sh "cd cppcheck_project &&  make COVERAGE=1"
+            }
+        }
+         stage('Test') {
+            steps {
+                def testListFile = 'all_tests.txt'
+                if (fileExists('cppcheck_project/selected_tests.txt')) {
+                    testListFile = 'selected_tests.txt'
+                } else {
+                    echo "Get list of tests..."
+                    sh "cd cppcheck_project && make testclasses COVERAGE=1"
+                }
+                echo "Using test list: ${testListFile}"
+                // Run the tests
+                echo "Testing.."
+                sh "cd cppcheck_project && bash run_list_of_tests.sh ${testListFile}"
+            }
+        }
     }
 }
