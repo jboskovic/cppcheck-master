@@ -155,10 +155,10 @@ class Collector:
                     
 
                     # Merge executed lines and functions without duplicates
-                    new_json_object_lines[file_index] = list(
-                        set(new_json_object_lines[file_index] + executed_lines))
-                    new_json_object_functions[file_index] = list(
-                        set(new_json_object_functions[file_index] + functions))
+                    all_lines = list(set(new_json_object_lines[file_index] + executed_lines))
+                    new_json_object_lines[file_index] = all_lines
+                    all_functions = list(set(new_json_object_functions[file_index] + functions))
+                    new_json_object_functions[file_index] = all_functions
                     
 
         return new_json_object_functions, new_json_object_lines
