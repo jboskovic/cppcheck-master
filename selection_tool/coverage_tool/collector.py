@@ -85,9 +85,28 @@ class Collector:
     def collect_data_from_test_file(self, test):
         # directory where .gcda files are stored for given test
         dir_name_with_tests_gcda_files = self.gcda_dir + '/' + test + '/'
+        files_lines = {}
+        files_functions = {}
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
-        output = subprocess_call(command).stdout
-        new_json_object_functions, new_json_object_lines = self.parse_full_json_object(output)
+        for json_string in os.popen(command):
+            output_functions, output_lines = self.parse_full_json_object(json_string)
+            for file, list_of_lines in output_lines.items():
+                if file not in files_lines:
+                    files_lines[file] = list_of_lines
+                else:
+                    curent_lines = files_lines[file]
+                    all_lines = list(set(curent_lines + list_of_lines))
+                    files_lines[file] = all_lines
+
+            for file, list_of_functions in output_functions.items():
+                if file not in files_functions:
+                    files_functions[file] = list_of_functions
+                else:
+                    curent_functions = files_functions[file]
+                    all_lines = list(set(curent_functions + list_of_functions))
+                    files_functions[file] = all_lines
+
+        
         self._storage.set_functions_per_file_for_test(test, new_json_object_functions)
         self._storage.set_lines_per_file_for_test(test, new_json_object_lines)
 
@@ -119,17 +138,13 @@ class Collector:
 
                 if executed_lines:
                     if file_index not in new_json_object_lines:
-                        new_json_object_lines[file_index] = {
-                            "executed_lines": []
-                        }
+                        new_json_object_lines[file_index] = []
                     if file_index not in new_json_object_functions:
-                        new_json_object_functions[file_index] = {
-                            "functions": []
-                        }
-                    new_json_object_lines[file_index]["executed_lines"] = list(
-                        set(executed_lines) | set(new_json_object_lines[file]["executed_lines"]))
-                    new_json_object_functions[file_index]["functions"] = list(
-                        set(functions) | set(new_json_object_functions[file]["functions"]))
+                        new_json_object_functions[file_index] = []
+                    new_json_object_lines[file_index]= list(
+                        set(executed_lines) | set(new_json_object_lines[file_index]))
+                    new_json_object_functions[file_index] = list(
+                        set(functions) | set(new_json_object_functions[file_index]))
                 
 
         return new_json_object_functions, new_json_object_lines
