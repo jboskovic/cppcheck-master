@@ -126,11 +126,13 @@ class Collector:
 
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
-        src_file_without_suffix = json_object['data_file'].strip('.gcda')
+        src_file_without_suffix = json_object['data_file'].strip('.gcno')
         for file_object in json_object['files']:
             file = file_object['file']
+            print("File ", file)
             file_index = str(self._storage.insert_file_indexed(file))
-            if src_file_without_suffix in file:
+            if file in  src_file_without_suffix:
+                print("File in ", src_file_without_suffix)
                 executed_lines = []
                 functions = []
 
