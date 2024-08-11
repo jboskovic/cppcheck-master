@@ -90,6 +90,8 @@ class Collector:
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
             output_functions, output_lines = self.parse_full_json_object(json_string)
+            print("functions output ", output_functions)
+            print("lines output ", output_lines)
             for file, list_of_lines in output_lines.items():
                 if file not in files_lines:
                     files_lines[file] = list_of_lines
