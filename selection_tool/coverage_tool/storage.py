@@ -124,31 +124,15 @@ class Storage:
         return self._files_indexed[file]
 
     # for test insert dict that maps file to list of functions used in it
-    def set_functions_per_file_for_test(self, test, file, functions):
+    def set_functions_per_file_for_test(self, test, map_files_to_functions):
         if test not in self._tests_indexed:
             print('Test is not in the mapping ', test)
             return None
-
-        if functions == []:
-            return
-
-        fun_indices = self.insert_function_indexed(functions)
-        file_index = self.insert_file_indexed(file)
-
-        if fun_indices == []:
-            return
-
-        index_test = self._tests_indexed[test]
-        if index_test not in self._test_to_functions_per_file:
-            self._test_to_functions_per_file[index_test] = dict()
-
-        copy_of_dict = self._test_to_functions_per_file[index_test]
-        if file_index not in copy_of_dict:
-            copy_of_dict[file_index] = fun_indices
+        test_index = self._tests_indexed[test]
+        if test not in self._test_to_functions_per_file:
+            self._test_to_functions_per_file[test_index](map_files_to_functions)
         else:
-            copy_of_dict[file_index] = copy_of_dict[file_index] + fun_indices
-
-        self._test_to_functions_per_file[index_test] = copy_of_dict
+            print("Test already has mapped files to functions")
 
      # for test insert dict that maps file to list of functions used in it
     def set_lines_per_file_for_test(self, test, lines_per_file):
@@ -156,8 +140,11 @@ class Storage:
             print('Test is not in the mapping ', test)
             return None
 
-        index_test = self._tests_indexed[test]
-        self._test_to_lines_per_file[index_test] = lines_per_file
+        test_index = self._tests_indexed[test]
+        if test not in self._test_to_functions_per_file:
+            self._test_to_lines_per_file[test_index](lines_per_file)
+        else:
+            print("Test already has mapped files to lines")
  
 
     # from mapping test to files to functions revert it to be a mapping file to functions to tests (same for controls and tables)

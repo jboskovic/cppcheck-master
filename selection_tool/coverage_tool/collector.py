@@ -1,7 +1,7 @@
 from multiprocessing import Process
-import re
 import time
 import os
+import json
 from helper_functions import subprocess_call, exit_with_message
 
 
@@ -85,82 +85,55 @@ class Collector:
     def collect_data_from_test_file(self, test):
         # directory where .gcda files are stored for given test
         dir_name_with_tests_gcda_files = self.gcda_dir + '/' + test + '/'
-        # for each .gcda file get directory where it's located and it's name
-        gcno_files_list = self.get_gcno_files_path_list(dir_name_with_tests_gcda_files)
-
-        if gcno_files_list is None:
-            print("Skip calling gcov for test {}. Investigate why getting the .gcda file locaitons failed.".format(test))
-            return None
-
-        # for each file collect covered functions
-        for gcno_file in gcno_files_list:
-            gcno_file_name = gcno_file[0]
-
-            file_name = self.get_relative_path_of_file(gcno_file_name)
-            gcov_args = gcno_file[1]
-            # call gcov per gcda file
-            # -n no output file -f function summaries
-            try:
-                output_from_gcda_file = subprocess_call(
-                    "gcov -n -f {}".format(gcov_args))
-            except Exception as e:
-                exit_with_message(f'Running gcov for {gcov_args} failed with {e}')
-
-
-            covered_functions = self.parse_output_from_gcda_file(output_from_gcda_file.stdout)
-
-            self._storage.set_functions_per_file_for_test(test, file_name, covered_functions)
-
-        covered_lines = self.parse_output_from_gcda_file_lines(dir_name_with_tests_gcda_files)
-        self._storage.set_lines_per_file_for_test(test, covered_lines)
-
-        # if self.delete_files_after_collecting:
-        #     subprocess_call('rm -rf {}'.format(dir_name_with_tests_gcda_files))
-
-        return True
-
-    def parse_output_from_gcda_file(self, output_from_gcda_file):
-        used_functions = []
-
-        collect_string_after_Function_regex = re.compile('Function \'(.+)\n?\'\nLines executed:(?!0\.00%)')
-        string_after_Function = collect_string_after_Function_regex.findall(output_from_gcda_file)
-
-        for name in string_after_Function:
-            name = name.strip()
-            # functions are mangled in gcov -> demangle it with c++flit
-            function_name = subprocess_call('c++filt {}'.format(name)).stdout.strip()
-            used_functions.append(function_name)
-
-        return used_functions
-
-    def parse_output_from_gcda_file_lines(self, dir_name_with_tests_gcda_files):
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         output = subprocess_call(command).stdout
-        print("output ", output)
-        executed_lines = {}
-        current_file = None
+        new_json_object_functions, new_json_object_lines = self.parse_full_json_object(output)
+        self._storage.set_functions_per_file_for_test(test, new_json_object_functions)
+        self._storage.set_lines_per_file_for_test(test, new_json_object_lines)
 
-        # Regex to parse gcov output
-        gcov_file_regex = re.compile(r"^File '(.+)'$")
-        gcov_line_regex = re.compile(r"^\s*(\d+):\s+(\d+):\s+.+$")
-        current_file_index = None
-        for line in output.splitlines():
-            file_match = gcov_file_regex.match(line)
-            if file_match:
-                current_file = file_match.group(1)
-                current_file_index = str(self._storage.insert_file_indexed(current_file))
-                if current_file_index not in executed_lines:
-                    executed_lines[current_file_index] = []
-                continue
 
-            line_match = gcov_line_regex.match(line)
-            if line_match and current_file_index:
-                execution_count = int(line_match.group(1))
-                line_number = int(line_match.group(2))
-                if execution_count > 0:
-                    print("Line number ", line_number)
-                    executed_lines[current_file_index].append(line_number)
-        
-        return executed_lines
+    # parse the json object from the gcov output for one test and return a json of executed lines and functions per file
+    def parse_full_json_object(self, json_object):
+        new_json_object_lines = {}
+        new_json_object_functions = {}
+
+        executed_lines, functions = [], []
+        json_object = json.loads(json_object)
+        src_file_without_suffix = json_object['data_file'].strip('.gcda')
+        for file_object in json_object['files']:
+            file = file_object['file']
+            file_index = str(self._storage.insert_file_indexed(file))
+            if src_file_without_suffix in file:
+                executed_lines = []
+                functions = []
+
+                for line_info in file_object['lines']:
+                    if line_info['count'] > 0:
+                        executed_lines.append(line_info['line_number'])
+
+                for function_info in file_object['functions']:
+                    if function_info['execution_count'] > 0:
+                        function_name = function_info['demangled_name']
+                        function_index = self._storage.insert_function_indexed(function_name)
+                        functions.append(function_index)
+
+                if executed_lines:
+                    if file_index not in new_json_object_lines:
+                        new_json_object_lines[file_index] = {
+                            "executed_lines": []
+                        }
+                    if file_index not in new_json_object_functions:
+                        new_json_object_functions[file_index] = {
+                            "functions": []
+                        }
+                    new_json_object_lines[file_index]["executed_lines"] = list(
+                        set(executed_lines) | set(new_json_object_lines[file]["executed_lines"]))
+                    new_json_object_functions[file_index]["functions"] = list(
+                        set(functions) | set(new_json_object_functions[file]["functions"]))
+                
+
+        return new_json_object_functions, new_json_object_lines
+
+    
 
 
