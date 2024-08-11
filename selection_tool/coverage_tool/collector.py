@@ -125,7 +125,7 @@ class Collector:
 
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
-        src_file_without_suffix = json_object['data_file'].split('.gcno')[0].split('cppcheck_project')[1]
+        src_file_without_suffix = json_object['data_file'].split('.gcno')[0].split('cppcheck_project/')[1]
         print("SRC ", src_file_without_suffix)
         for file_object in json_object['files']:
             file = file_object['file']
