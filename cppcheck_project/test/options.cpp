@@ -63,6 +63,7 @@ bool options::summary() const
 bool options::dry_run() const
 {
     return mDryRun;
+    // commment
 }
 
 const std::set<std::string>& options::which_test() const
