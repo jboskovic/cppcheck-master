@@ -8,7 +8,7 @@ class ParsePR:
         self.baseline = self.get_baseline_of_PR()
         self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
-        self.changed_lines = self.get_changed_lines_from_PR()
+        self.changed_lines = self.get_changed_lines_from_PR((".cpp", ".h", ".c"))
 
     def get_baseline_of_PR(self):
         try:
