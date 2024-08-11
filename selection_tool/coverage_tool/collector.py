@@ -136,13 +136,14 @@ class Collector:
     def parse_output_from_gcda_file_lines(self, dir_name_with_tests_gcda_files):
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         output = subprocess_call(command).stdout
+        print("output ", output)
         executed_lines = {}
         current_file = None
 
         # Regex to parse gcov output
         gcov_file_regex = re.compile(r"^File '(.+)'$")
         gcov_line_regex = re.compile(r"^\s*(\d+):\s+(\d+):\s+.+$")
-
+        current_file_index = None
         for line in output.splitlines():
             file_match = gcov_file_regex.match(line)
             if file_match:
@@ -157,6 +158,7 @@ class Collector:
                 execution_count = int(line_match.group(1))
                 line_number = int(line_match.group(2))
                 if execution_count > 0:
+                    print("Line number ", line_number)
                     executed_lines[current_file_index].append(line_number)
         
         return executed_lines
