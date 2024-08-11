@@ -125,13 +125,13 @@ class Collector:
 
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
-        src_file_without_suffix = json_object['data_file'].split('.gcno')[0]
+        src_file_without_suffix = json_object['data_file'].split('.gcno')[0].split('cppcheck_project')[1]
         print("SRC ", src_file_without_suffix)
         for file_object in json_object['files']:
             file = file_object['file']
             print("File ", file)
             file_index = str(self._storage.insert_file_indexed(file))
-            if file in  src_file_without_suffix:
+            if src_file_without_suffix in file:
                 print("File in ", src_file_without_suffix)
                 executed_lines = []
                 functions = []
