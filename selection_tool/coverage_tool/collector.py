@@ -91,8 +91,6 @@ class Collector:
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
             output_functions, output_lines = self.parse_full_json_object(json_string)
-            print("functions output ", output_functions)
-            print("lines output ", output_lines)
             for file, list_of_lines in output_lines.items():
                 if file not in files_lines:
                     files_lines[file] = list_of_lines
@@ -109,8 +107,6 @@ class Collector:
                     all_functions = list(set(curent_functions + list_of_functions))
                     files_functions[file] = all_functions
 
-        print("Functions ", files_functions)
-        print("Lines ", files_functions)
 
         self._storage.set_functions_per_file_for_test(test, files_functions)
         self._storage.set_lines_per_file_for_test(test, files_lines)
@@ -126,13 +122,10 @@ class Collector:
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
         src_file_without_suffix = json_object['data_file'].split('.gcno')[0].split('cppcheck_project/')[1]
-        print("SRC ", src_file_without_suffix)
         for file_object in json_object['files']:
             file = file_object['file']
-            print("File ", file)
             file_index = str(self._storage.insert_file_indexed(file))
             if src_file_without_suffix in file:
-                print("File in ", src_file_without_suffix)
                 executed_lines = []
                 functions = []
 
@@ -144,7 +137,6 @@ class Collector:
                     if function_info['execution_count'] > 0:
                         function_name = function_info['demangled_name']
                         function_index = self._storage.insert_function_indexed(function_name)
-                        print("Finction  index ", function_index)
                         functions.append(function_index)
 
                 if executed_lines:
