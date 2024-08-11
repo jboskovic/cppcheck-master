@@ -144,6 +144,7 @@ class Collector:
                     if function_info['execution_count'] > 0:
                         function_name = function_info['demangled_name']
                         function_index = self._storage.insert_function_indexed(function_name)
+                        print("Finction  index ", function_index)
                         functions.append(function_index)
 
                 if executed_lines:
