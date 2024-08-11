@@ -51,6 +51,36 @@ class Collector:
         gcno_relative = gcno_file_name.split('cppcheck_project')[1]
         return gcno_relative
 
+    def get_gcno_files_path_list(self, dir_name_with_tests_gcda_files):
+        try:
+            subprocess_call(
+                'find {} -iname "*.gcda\" | awk \'{{ system(\"dirname \" $1); print $1}}\' > gcda_{}.list '.format(
+                    dir_name_with_tests_gcda_files, self.process_id))
+        except Exception as e:
+            exit_with_message(f"Creating arguments for gcov failed with {e}")
+
+        file = open("gcda_{}.list".format(self.process_id), "r")
+        gcda_file_path_and_dir = [line.strip() for line in file.readlines()]
+
+        # pairs of lines [dir_path, absolurte_path]
+        gcda_file_path_and_dir_pair = [gcda_file_path_and_dir[n:n + 2] for n in range(0, len(gcda_file_path_and_dir), 2)]
+
+        # make symlink to representative .gcno files
+        for line in gcda_file_path_and_dir_pair:
+            # replace extention
+            line[1] = line[1].replace('.gcda', '.gcno')
+            # from path get location of the file in out directory
+            gcno_file_path = self.get_relative_path_of_file(line[1])
+            # make symbolic link to the .gcno file
+            try:
+                subprocess_call('ln -s {} {}'.format(os.getcwd() + '/' + gcno_file_path, line[0]))
+            except Exception as e:
+                exit_with_message(f'Creating symbolic link ln -s failed with {e}')
+
+        # -o specific parent dir
+        gcno_files_path_list = [[line[1][:-5], " -o " + line[0]  + " "  + line[1]] for line in gcda_file_path_and_dir_pair]
+        return gcno_files_path_list
+    
     def collect_data_from_test_file(self, test):
         # directory where .gcda files are stored for given test
         dir_name_with_tests_gcda_files = self.gcda_dir + '/' + test + '/'
