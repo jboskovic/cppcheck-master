@@ -39,6 +39,7 @@ class Storage:
     # multiprocessing safe dictionaries  that store test to type of data (function, control, table) per file
     def init_dict_for_collection(self):
         self._test_to_functions_per_file = self._manager.dict()
+        self._test_to_lines_per_file = self._manager.dict()
 
     # multiprocessing safe dictionaries that store names indexed
     def init_dict_for_names(self):
@@ -113,7 +114,7 @@ class Storage:
                 list_of_indexes.append(self._functions_indexed[fun])
 
         return list_of_indexes
-
+    
     def insert_file_indexed(self, file):
         if file not in self._files_indexed:
             with self.lock_file:
@@ -149,6 +150,32 @@ class Storage:
 
         self._test_to_functions_per_file[index_test] = copy_of_dict
 
+     # for test insert dict that maps file to list of functions used in it
+    def set_lines_per_file_for_test(self, test, file, lines):
+        if test not in self._tests_indexed:
+            print('Test is not in the mapping ', test)
+            return None
+
+        if lines == []:
+            return
+
+        file_index = self.insert_file_indexed(file)
+
+        if lines == []:
+            return
+
+        index_test = self._tests_indexed[test]
+        if index_test not in self._test_to_lines_per_file:
+            self._test_to_lines_per_file[index_test] = dict()
+
+        copy_of_dict = self._test_to_lines_per_file[index_test]
+        if file_index not in copy_of_dict:
+            copy_of_dict[file_index] = lines
+        else:
+            copy_of_dict[file_index] = copy_of_dict[file_index] + lines
+
+        self._test_to_lines_per_file[index_test] = copy_of_dict
+
     # from mapping test to files to functions revert it to be a mapping file to functions to tests (same for controls and tables)
     def revert_map(self, map_test_to_data):
         map_data_to_tests = dict()
@@ -181,10 +208,14 @@ class Storage:
  
         data_index = dict(self._functions_indexed)
         data_reverted = self.revert_map(self._test_to_functions_per_file)
+        lines_data_reverted = self.revert_map(self._test_to_lines_per_file)
 
 
         write_json('{}/functions_indexed.json'.format(self.dir_name_tmp), data_index)
         write_json('{}/functions_to_tests.json'.format(self.dir_name_tmp), data_reverted)
+
+        write_json('{}/lines_to_tests.json'.format(self.dir_name_tmp), lines_data_reverted)
+
 
         print("Saving data is finished. Rename dir {} to {}".format(self.dir_name_tmp, self.dir_name))
         try:
