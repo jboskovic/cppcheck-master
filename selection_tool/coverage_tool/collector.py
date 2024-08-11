@@ -158,7 +158,7 @@ class Collector:
         return new_json_object_functions, new_json_object_lines
 
     def create_gcno_symlinks(self, dir_name):
-        command = f"cd {dir_name} && find . -name \"*.gcda\" -print0 | xargs -0 -I{{}} sh -c 'ln -sf ../../$(echo \"{{}}\" | sed 's/\.gcda$/.gcno/') $(echo \"{{}}\" | sed 's/\.gcda$/.gcno/')'"
+        command = f"cd {dir_name} && find . -name \"*.gcda\" -print0 | xargs -0 -I{{}} sh -c 'ln -sf /$(echo \"{{}}\" | sed 's/\.gcda$/.gcno/') $(echo \"{{}}\" | sed 's/\.gcda$/.gcno/')'"
         subprocess_call(command)
 
 
