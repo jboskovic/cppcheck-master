@@ -90,7 +90,6 @@ class Collector:
         self.create_gcno_symlinks(dir_name_with_tests_gcda_files)
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
-            print("Json String ", json_string)
             output_functions, output_lines = self.parse_full_json_object(json_string)
             print("functions output ", output_functions)
             print("lines output ", output_lines)
@@ -126,7 +125,8 @@ class Collector:
 
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
-        src_file_without_suffix = json_object['data_file'].strip('.gcno')
+        src_file_without_suffix = json_object['data_file'].split('.gcno')[0]
+        print("SRC ", src_file_without_suffix)
         for file_object in json_object['files']:
             file = file_object['file']
             print("File ", file)
