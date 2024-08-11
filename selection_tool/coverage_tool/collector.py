@@ -147,15 +147,19 @@ class Collector:
                         functions.append(function_index)
 
                 if executed_lines:
+                    # Ensure the file_index exists in both dictionaries
                     if file_index not in new_json_object_lines:
                         new_json_object_lines[file_index] = []
                     if file_index not in new_json_object_functions:
                         new_json_object_functions[file_index] = []
-                    new_json_object_lines[file_index]= list(
-                        set(executed_lines) | set(new_json_object_lines[file_index]))
+                    
+
+                    # Merge executed lines and functions without duplicates
+                    new_json_object_lines[file_index] = list(
+                        set(new_json_object_lines[file_index] + executed_lines))
                     new_json_object_functions[file_index] = list(
-                        set(functions) | set(new_json_object_functions[file_index]))
-                
+                        set(new_json_object_functions[file_index] + functions))
+                    
 
         return new_json_object_functions, new_json_object_lines
 
