@@ -8,7 +8,7 @@ class ParsePR:
         self.baseline = self.get_baseline_of_PR()
         self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
-        self.changed_lines = self.get_changed_lines_from_PR()
+        self.changed_lines = self.get_changed_lines_from_PR((".cpp", ".h", ".c"))
 
     def get_baseline_of_PR(self):
         try:
@@ -127,7 +127,7 @@ class ParsePR:
         hunk_header_pattern = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 
         current_file = None
-        changed_lines = defaultdict(list)
+        changed_lines = {}
 
         # Parse the git diff output
         for line in output.stdout.splitlines():
@@ -141,6 +141,8 @@ class ParsePR:
                 start_line = int(hunk_match.group(1))
                 num_lines = int(hunk_match.group(2) or 1)
                 for i in range(start_line, start_line + num_lines):
+                    if current_file not in changed_lines:
+                        changed_lines[current_file] = []
                     changed_lines[current_file].append(i)
 
         print("Changed lines ", changed_lines)
