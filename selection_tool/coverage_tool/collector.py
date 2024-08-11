@@ -87,6 +87,7 @@ class Collector:
         dir_name_with_tests_gcda_files = self.gcda_dir + '/' + test + '/'
         files_lines = {}
         files_functions = {}
+        self.create_gcno_symlinks(dir_name_with_tests_gcda_files)
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
             print("Command ps open")
@@ -156,6 +157,8 @@ class Collector:
 
         return new_json_object_functions, new_json_object_lines
 
-    
+    def create_gcno_symlinks(self, dir_name):
+        command = f"cd {dir_name} && find . -name \"*.gcda\" -print0 | xargs -0 -I{{}} sh -c 'ln -sf ../../$(echo \"{{}}\" | sed 's/\.gcda$/.gcno/') $(echo \"{{}}\" | sed 's/\.gcda$/.gcno/')'"
+        subprocess_call(command)
 
 
