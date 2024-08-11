@@ -1,5 +1,6 @@
 from helper_functions import *
 import os
+import re
 
 
 class ParsePR:
@@ -7,6 +8,7 @@ class ParsePR:
         self.baseline = self.get_baseline_of_PR()
         self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
+        self.changed_lines = self.get_changed_lines_from_PR()
 
     def get_baseline_of_PR(self):
         try:
@@ -111,6 +113,38 @@ class ParsePR:
             collected_changes['has_h_changes_without_cpp_changes'] = False
 
         return collected_changes
+
+    def get_changed_lines_from_PR(self, coverage_extensions):
+        try:
+            output = subprocess_call(
+                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.c\'')
+        except Exception as e:
+            exit_with_message(f"Getting chagned files from PR failed {e}")
+
+
+        # Regex patterns to match file headers and hunks
+        file_header_pattern = re.compile(r"^diff --git a/(.*) b/(.*)")
+        hunk_header_pattern = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
+
+        current_file = None
+        changed_lines = defaultdict(list)
+
+        # Parse the git diff output
+        for line in output.stdout.splitlines():
+            file_match = file_header_pattern.match(line)
+            if file_match:
+                current_file = file_match.group(2)
+                continue
+
+            hunk_match = hunk_header_pattern.match(line)
+            if hunk_match and current_file:
+                start_line = int(hunk_match.group(1))
+                num_lines = int(hunk_match.group(2) or 1)
+                for i in range(start_line, start_line + num_lines):
+                    changed_lines[current_file].append(i)
+
+        print("Changed lines ", changed_lines)
+        return changed_lines
 
     def remove_duplicates_from_collected_changes(self, collected_changes):
         for type_of_change in ['functions', 'others']:
