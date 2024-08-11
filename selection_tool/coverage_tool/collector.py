@@ -3,6 +3,8 @@ import re
 import queue
 import time
 import os
+import json
+import ijson
 from helper_functions import subprocess_call, exit_with_message
 
 
@@ -77,17 +79,13 @@ class Collector:
             except Exception as e:
                 exit_with_message(f'Running gcov for {gcov_args} failed with {e}')
 
-            try:
-                output_from_gcda_file_lines = subprocess_call(
-                    "gcov {}".format(gcov_args))
-            except Exception as e:
-                exit_with_message(f'Running gcov for {gcov_args} failed with {e}')
 
             covered_functions = self.parse_output_from_gcda_file(output_from_gcda_file.stdout)
-            covered_lines = self.parse_output_from_gcda_file_lines(output_from_gcda_file_lines.stdout)
 
             self._storage.set_functions_per_file_for_test(test, file_name, covered_functions)
-            self._storage.set_lines_per_file_for_test(test, file_name, covered_lines)
+
+        covered_lines = self.parse_output_from_gcda_file_lines(dir_name_with_tests_gcda_files)
+        self._storage.set_lines_per_file_for_test(test, file_name, covered_lines)
 
         # if self.delete_files_after_collecting:
         #     subprocess_call('rm -rf {}'.format(dir_name_with_tests_gcda_files))
@@ -108,94 +106,32 @@ class Collector:
 
         return used_functions
 
-    def parse_output_from_gcda_file_lines(self, output_from_gcda_file):
-        used_lines = []
-
-        gcov_file_regex = re.compile(r"File '(.+)'")
-        gcov_line_regex = re.compile(r"^\s*(\d+):\s+(\d+):\s+.+$")
-
-        executed_lines = []
-
-        for line in output_from_gcda_file.splitlines():
-            line_match = gcov_line_regex.match(line)
-            if line_match:
-                execution_count = int(line_match.group(1))
-                line_number = int(line_match.group(2))
-                if execution_count > 0:
-                    executed_lines.append(line_number)
-
-
-
-        return executed_lines
-
-    # for all .gcda files inside the directory get absolute file name and it's dir location
-    def get_gcno_files_path_list(self, dir_name_with_tests_gcda_files):
-        try:
-            subprocess_call(
-                'find {} -iname "*.gcda\" | awk \'{{ system(\"dirname \" $1); print $1}}\' > gcda_{}.list '.format(
-                    dir_name_with_tests_gcda_files, self.process_id))
-        except Exception as e:
-            exit_with_message(f"Creating arguments for gcov failed with {e}")
-
-        file = open("gcda_{}.list".format(self.process_id), "r")
-        gcda_file_path_and_dir = [line.strip() for line in file.readlines()]
-
-        # pairs of lines [dir_path, absolurte_path]
-        gcda_file_path_and_dir_pair = [gcda_file_path_and_dir[n:n + 2] for n in range(0, len(gcda_file_path_and_dir), 2)]
-
-        # make symlink to representative .gcno files
-        for line in gcda_file_path_and_dir_pair:
-            # replace extention
-            line[1] = line[1].replace('.gcda', '.gcno')
-            # from path get location of the file in out directory
-            gcno_file_path = self.get_relative_path_of_file(line[1])
-            # make symbolic link to the .gcno file
-            try:
-                subprocess_call('ln -s {} {}'.format(os.getcwd() + '/' + gcno_file_path, line[0]))
-            except Exception as e:
-                exit_with_message(f'Creating symbolic link ln -s failed with {e}')
-
-        # -o specific parent dir
-        gcno_files_path_list = [[line[1][:-5], " -o " + line[0]  + " "  + line[1]] for line in gcda_file_path_and_dir_pair]
-        return gcno_files_path_list
-
-    def set_executed_lines(self):
-        command = f"find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -it {{}} 2>/dev/null"
-        files = []
+    def parse_output_from_gcda_file_lines(self, dir_name_with_tests_gcda_files):
+        command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
+        output = subprocess_call(command).stdout
+        executed_lines = {}
+        current_file = None
 
         # Regex to parse gcov output
         gcov_file_regex = re.compile(r"^File '(.+)'$")
         gcov_line_regex = re.compile(r"^\s*(\d+):\s+(\d+):\s+.+$")
 
-        output = os.popen(command).read()
-        current_file = None
-        executed_lines = []
-
         for line in output.splitlines():
             file_match = gcov_file_regex.match(line)
             if file_match:
-                # If we have a current file, store its executed lines
-                if current_file and executed_lines:
-                    file_index = self._storage.insert_file_indexed(current_file)
-                    self._storage._files_to_lines_dict[int(file_index)] = {
-                        "executed_lines": executed_lines
-                    }
-                    executed_lines = []
-
-                # Update the current file
                 current_file = file_match.group(1)
-                files.append(current_file)
+                current_file_index = str(self._storage.insert_file_indexed(current_file))
+                if current_file_index not in executed_lines:
+                    executed_lines[current_file_index] = []
+                continue
 
             line_match = gcov_line_regex.match(line)
-            if line_match:
+            if line_match and current_file_index:
                 execution_count = int(line_match.group(1))
                 line_number = int(line_match.group(2))
                 if execution_count > 0:
-                    executed_lines.append(line_number)
+                    executed_lines[current_file_index].append(line_number)
+        
+        return executed_lines
 
-        # Store the last file's executed lines if any
-        if current_file and executed_lines:
-            file_index = self._storage.insert_file_indexed(current_file)
-            self._storage._files_to_lines_dict[int(file_index)] = {
-                "executed_lines": executed_lines
-            }
+

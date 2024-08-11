@@ -151,30 +151,14 @@ class Storage:
         self._test_to_functions_per_file[index_test] = copy_of_dict
 
      # for test insert dict that maps file to list of functions used in it
-    def set_lines_per_file_for_test(self, test, file, lines):
+    def set_lines_per_file_for_test(self, test, lines_per_file):
         if test not in self._tests_indexed:
             print('Test is not in the mapping ', test)
             return None
 
-        if lines == []:
-            return
-
-        file_index = self.insert_file_indexed(file)
-
-        if lines == []:
-            return
-
         index_test = self._tests_indexed[test]
-        if index_test not in self._test_to_lines_per_file:
-            self._test_to_lines_per_file[index_test] = dict()
-
-        copy_of_dict = self._test_to_lines_per_file[index_test]
-        if file_index not in copy_of_dict:
-            copy_of_dict[file_index] = lines
-        else:
-            copy_of_dict[file_index] = copy_of_dict[file_index] + lines
-
-        self._test_to_lines_per_file[index_test] = copy_of_dict
+        self._test_to_lines_per_file[index_test] = lines_per_file
+ 
 
     # from mapping test to files to functions revert it to be a mapping file to functions to tests (same for controls and tables)
     def revert_map(self, map_test_to_data):
