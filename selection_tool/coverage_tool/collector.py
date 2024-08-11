@@ -112,7 +112,7 @@ class Collector:
             self._storage.set_functions_per_file_for_test(test, file_name, covered_functions)
 
         covered_lines = self.parse_output_from_gcda_file_lines(dir_name_with_tests_gcda_files)
-        self._storage.set_lines_per_file_for_test(test, file_name, covered_lines)
+        self._storage.set_lines_per_file_for_test(test, covered_lines)
 
         # if self.delete_files_after_collecting:
         #     subprocess_call('rm -rf {}'.format(dir_name_with_tests_gcda_files))
