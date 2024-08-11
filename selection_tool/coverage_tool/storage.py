@@ -102,18 +102,13 @@ class Storage:
 
         return self._test_to_functions_per_file[index]
 
-    def insert_function_indexed(self, functions):
-        list_of_indexes = []
-        for fun in functions:
-            if fun not in self._functions_indexed:
-                with self.lock_function:
-                    self._last_index_for_function.value += 1
-                    self._functions_indexed[fun] = self._last_index_for_function.value
-                list_of_indexes.append(self._last_index_for_function.value)
-            else:
-                list_of_indexes.append(self._functions_indexed[fun])
+    def insert_function_indexed(self, function):
+        if function not in self._functions_indexed:
+            with self.lock_function:
+                self._last_index_for_function.value += 1
+                self._functions_indexed[function] = self._last_index_for_function.value
 
-        return list_of_indexes
+        return self._functions_indexed[function]
     
     def insert_file_indexed(self, file):
         if file not in self._files_indexed:
