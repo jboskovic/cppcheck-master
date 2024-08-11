@@ -130,7 +130,7 @@ class Storage:
             return None
         test_index = self._tests_indexed[test]
         if test not in self._test_to_functions_per_file:
-            self._test_to_functions_per_file[test_index](map_files_to_functions)
+            self._test_to_functions_per_file[test_index] = map_files_to_functions
         else:
             print("Test already has mapped files to functions")
 
@@ -142,7 +142,7 @@ class Storage:
 
         test_index = self._tests_indexed[test]
         if test not in self._test_to_functions_per_file:
-            self._test_to_lines_per_file[test_index](lines_per_file)
+            self._test_to_lines_per_file[test_index] = lines_per_file
         else:
             print("Test already has mapped files to lines")
  
