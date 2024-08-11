@@ -89,6 +89,7 @@ class Collector:
         files_functions = {}
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
+            print("Command ps open")
             output_functions, output_lines = self.parse_full_json_object(json_string)
             print("functions output ", output_functions)
             print("lines output ", output_lines)
