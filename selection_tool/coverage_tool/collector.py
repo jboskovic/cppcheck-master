@@ -106,9 +106,13 @@ class Collector:
                     all_functions = list(set(curent_functions + list_of_functions))
                     files_functions[file] = all_functions
 
-        
+        print("Functions ", files_functions)
+        print("Lines ", files_functions)
+
         self._storage.set_functions_per_file_for_test(test, files_functions)
         self._storage.set_lines_per_file_for_test(test, files_lines)
+
+        return True
 
 
     # parse the json object from the gcov output for one test and return a json of executed lines and functions per file
