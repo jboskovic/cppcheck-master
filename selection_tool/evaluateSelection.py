@@ -47,6 +47,7 @@ if __name__ == '__main__':
             lines_to_tests = lines_to_tests_file[file_indexed]
 
         for line in lines:
+            print("Changed line number ", line)
             if str(line) in lines_to_tests:
                 print(f"Line is covered {line}")
                 covered_tests.extend(lines_to_tests[str(line)])
@@ -59,7 +60,7 @@ if __name__ == '__main__':
             covered_tests_names.append(test)
 
     print("Selected tests")
-    print(test)
+    print(covered_tests_names)
 
 
 
