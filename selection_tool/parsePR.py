@@ -134,6 +134,7 @@ class ParsePR:
             file_match = file_header_pattern.match(line)
             if file_match:
                 current_file = file_match.group(2)
+                current_file = current_file.split("cppcheck_project/")[1]
                 continue
 
             hunk_match = hunk_header_pattern.match(line)
@@ -145,7 +146,7 @@ class ParsePR:
                         changed_lines[current_file] = []
                     changed_lines[current_file].append(i)
 
-        print("Changed lines ", changed_lines)
+        print("Changed lines per file ", changed_lines)
         return changed_lines
 
     def remove_duplicates_from_collected_changes(self, collected_changes):

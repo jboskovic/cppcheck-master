@@ -29,7 +29,6 @@ if __name__ == '__main__':
     tests_indexed_filles = read_json(coverage_location_for_branch + "/test_indexed.json")
     covered_tests = []
     for file, lines in changed_lines.items():
-        file = file.split("cppcheck_project/")[1]
         file_indexed  = None
         if file not in files_indexed_files:
             print(f"File {file} doesnt have coverage")
