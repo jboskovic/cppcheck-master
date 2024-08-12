@@ -50,7 +50,7 @@ pipeline {
         stage("Evaluate the selection") {
             steps {
                 echo "Evaluate the selected tests..."
-                sh "cd cppcheck_project && python3 ../selection_tool/coverage_tool/evaluateSelection.py --sha ${GIT_SHA} --branch-name ${env.BRANCH_NAME} -j8"
+                sh "cd python3 selection_tool/evaluateSelection.py --sha ${GIT_SHA} --branch-name ${env.BRANCH_NAME} -j8"
             }
         }
     }
