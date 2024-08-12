@@ -49,9 +49,11 @@ pipeline {
         }
         stage("Evaluate the selection") {
             steps {
-                if (env.BRANCH_NAME != "main") {
-                    echo "Evaluate the selected tests..."
-                    sh "python3 selection_tool/evaluateSelection.py --sha --sha ${GIT_SHA}  --branch-name ${env.BRANCH_NAME}"
+                script {
+                    if (env.BRANCH_NAME != "main") {
+                        echo "Evaluate the selected tests..."
+                        sh "python3 selection_tool/evaluateSelection.py --sha ${GIT_SHA} --branch-name ${env.BRANCH_NAME}"
+                    }
                 }
             }
         }
