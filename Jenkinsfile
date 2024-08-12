@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    // options {
-    //     skipDefaultCheckout true // Skip the default checkout
-    // }
-    // environment {
-    //     GIT_SHA = "" // Initialize a variable to store the Git SHA
-    // }
+    options {
+        skipDefaultCheckout true // Skip the default checkout
+    }
+    environment {
+        GIT_SHA = "" // Initialize a variable to store the Git SHA
+    }
     stages {
         stage('Prepare Workspace') {
             steps {
