@@ -54,13 +54,12 @@ class SelectRelevantTests:
             with open(file_for_evaluation, 'w') as file:
                 for test in self.coverage_tool.output:
                     file.write(f"{test}\n")
-                print("Successfully wrote {} tests to {}".format(len(self.coverage_tool.output), file_for_evaluation))
         except Exception as e:
             print(f"An error occurred: {e}")
         
+        print("Write changed files and lines to a file {}".format(file_for_evaluation))
         file_with_changes = f"/var/jenkins_home/changes/changed_lines_{self.sha}.txt"
-        print("Write changed lines to a file {}".format(file_with_changes))
-        write_json(self.parser.changed_lines, file_with_changes)
+        write_json(file_with_changes, self.parser.changed_lines)
         print('###################################')
 
 

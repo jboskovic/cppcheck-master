@@ -121,38 +121,36 @@ class Collector:
 
         executed_lines, functions = [], []
         json_object = json.loads(json_object)
-        src_file_without_suffix = json_object['data_file'].split('.gcno')[0].split('cppcheck_project/')[1]
         for file_object in json_object['files']:
             file = file_object['file']
             file_index = str(self._storage.insert_file_indexed(file))
-            if src_file_without_suffix in file:
-                executed_lines = []
-                functions = []
+            executed_lines = []
+            functions = []
 
-                for line_info in file_object['lines']:
-                    if line_info['count'] > 0:
-                        executed_lines.append(line_info['line_number'])
+            for line_info in file_object['lines']:
+                if line_info['count'] > 0:
+                    executed_lines.append(line_info['line_number'])
 
-                for function_info in file_object['functions']:
-                    if function_info['execution_count'] > 0:
-                        function_name = function_info['demangled_name']
-                        function_index = self._storage.insert_function_indexed(function_name)
-                        functions.append(function_index)
+            for function_info in file_object['functions']:
+                if function_info['execution_count'] > 0:
+                    function_name = function_info['demangled_name']
+                    function_index = self._storage.insert_function_indexed(function_name)
+                    functions.append(function_index)
 
-                if executed_lines:
-                    # Ensure the file_index exists in both dictionaries
-                    if file_index not in new_json_object_lines:
-                        new_json_object_lines[file_index] = []
-                    if file_index not in new_json_object_functions:
-                        new_json_object_functions[file_index] = []
-                    
+            if executed_lines != []:
+                # Ensure the file_index exists in both dictionaries
+                if file_index not in new_json_object_lines:
+                    new_json_object_lines[file_index] = []
+                if file_index not in new_json_object_functions:
+                    new_json_object_functions[file_index] = []
+                
 
-                    # Merge executed lines and functions without duplicates
-                    all_lines = list(set(new_json_object_lines[file_index] + executed_lines))
-                    new_json_object_lines[file_index] = all_lines
-                    all_functions = list(set(new_json_object_functions[file_index] + functions))
-                    new_json_object_functions[file_index] = all_functions
-                    
+                # Merge executed lines and functions without duplicates
+                all_lines = list(set(new_json_object_lines[file_index] + executed_lines))
+                new_json_object_lines[file_index] = all_lines
+                all_functions = list(set(new_json_object_functions[file_index] + functions))
+                new_json_object_functions[file_index] = all_functions
+                
 
         return new_json_object_functions, new_json_object_lines
 
