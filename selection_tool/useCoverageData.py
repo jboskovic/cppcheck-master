@@ -195,7 +195,6 @@ class CoverageData:
                     tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
-                    print("Selected tests for this change {}".format(tests_to_run))
                     if not run_default:
                         list_of_tests_need_for_run += tests_to_run
 
@@ -239,7 +238,7 @@ class CoverageData:
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
             print("Type {} with the name {} and index {} selected tests {}".format(
-                type_of_collection, name_without_args, index, test_names))
+                type_name, name_without_args, index, test_names))
             selected_tests += test_names
 
         # with the set remove duplicates of indices and return the list of it
