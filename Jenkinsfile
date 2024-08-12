@@ -50,7 +50,7 @@ pipeline {
         stage("Evaluate the selection") {
             steps {
                 echo "Evaluate the selected tests..."
-                sh "python3 selection_tool/evaluateSelection.py --sha 04e0663f6b5e42690b1d22413646ccc776704b35  --branch-name ${env.BRANCH_NAME} -j8"
+                sh "python3 selection_tool/evaluateSelection.py --sha 04e0663f6b5e42690b1d22413646ccc776704b35  --branch-name ${env.BRANCH_NAME}"
             }
         }
     }
