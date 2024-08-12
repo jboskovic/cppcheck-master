@@ -45,9 +45,12 @@ if __name__ == '__main__':
             continue
         else:
             lines_to_tests = lines_to_tests_file[file_indexed]
-            print(f"File {file} has covered lines {lines_to_tests}")
 
-        covered_tests.extend(lines_to_tests)
+        for line in lines:
+            if str(line) in lines_to_tests:
+                print(f"Line is covered {line}")
+                covered_tests.extend(lines_to_tests[str(line)])
+                print(f"Found tests {lines_to_tests[str(line)]}")
 
     covered_tests_names = []
     for test, index in tests_indexed_filles.items():
