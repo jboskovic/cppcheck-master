@@ -28,3 +28,14 @@ def read_json(nfile):
     except FileNotFoundError:
         print("Failed while reading file ", nfile)
         return {}
+    
+def read_file(nfile):
+    try:
+        with open(nfile, "r") as read_content:
+            return read_content.read()
+    except FileNotFoundError:
+        print("Failed while reading file", nfile)
+        return ""
+    except Exception as e:
+        print(f"An error occurred while reading file {nfile}: {e}")
+        return ""
