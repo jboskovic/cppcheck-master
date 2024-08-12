@@ -222,7 +222,9 @@ class CoverageData:
                 print("File {} is indexed but there isn't mapping from that file to functions and tests.".format(file_name))
                 type_to_test_indexed = None
             else:
-                type_to_test_indexed = type_to_test_indexed_per_file[str(file_index)]
+                print("For type ", type_of_collection)
+                print("Find file index ", file_index)
+                type_to_test_indexed = type_to_test_indexed_per_file[file_index]
 
         for index in func_indices:
             type_name = self.convert_index_to_name(type_of_collection, index)
