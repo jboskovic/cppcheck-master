@@ -7,24 +7,24 @@ pipeline {
     //     GIT_SHA = "" // Initialize a variable to store the Git SHA
     // }
     stages {
-        // stage('Prepare Workspace') {
-        //     steps {
-        //         echo "Clearing workspace..."
-        //         deleteDir() // Clear the workspace
-        //     }
-        // }
-        // stage('Checkout') {
-        //     steps {
-        //         echo 'Checking out from Git...'
-        //         // Replace with your repository URL and branch
-        //         git branch: "${env.BRANCH_NAME}", url: 'git@github.com:jboskovic/cppcheck-master.git', credentialsId: '9a6c6d07-0b04-4278-ba08-c4659a2eb2c4'
-        //         // Get the Git SHA of the checked-out commit
-        //         script {
-        //             GIT_SHA = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
-        //             echo "Checked out commit: ${GIT_SHA}"
-        //         }
-        //     }
-        // }
+        stage('Prepare Workspace') {
+            steps {
+                echo "Clearing workspace..."
+                deleteDir() // Clear the workspace
+            }
+        }
+        stage('Checkout') {
+            steps {
+                echo 'Checking out from Git...'
+                // Replace with your repository URL and branch
+                git branch: "${env.BRANCH_NAME}", url: 'git@github.com:jboskovic/cppcheck-master.git', credentialsId: '9a6c6d07-0b04-4278-ba08-c4659a2eb2c4'
+                // Get the Git SHA of the checked-out commit
+                script {
+                    GIT_SHA = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                    echo "Checked out commit: ${GIT_SHA}"
+                }
+            }
+        }
         // stage('Build') {
         //     steps {
         //         // Add build commands here
