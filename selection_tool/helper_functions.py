@@ -33,8 +33,9 @@ def read_file(nfile):
     try:
         with open(nfile, "r") as read_content:
             return read_content.read()
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         print("Failed while reading file", nfile)
+        print(e)
         return ""
     except Exception as e:
         print(f"An error occurred while reading file {nfile}: {e}")

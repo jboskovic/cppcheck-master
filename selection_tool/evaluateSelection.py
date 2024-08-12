@@ -23,6 +23,7 @@ if __name__ == '__main__':
     format_for_directory =  date_of_sha + '_sha_' + args.sha
 
     coverage_location_for_branch = coverage_location_jenkins_path_base + '/' + args.branch_name + '/' + format_for_directory
+    print("Read from ", coverage_location_for_branch)
     lines_to_tests_file = read_file(coverage_location_for_branch + "/lines_to_tests.json")
     files_indexed_files = read_file(coverage_location_for_branch + "/files_indexed.json")
     tests_indexed_filles = read_file(coverage_location_for_branch + "/test_indexed.json")
@@ -38,7 +39,7 @@ if __name__ == '__main__':
         
         lines_to_tests = None
         if file_indexed not in lines_to_tests_file:
-            print("File is not covered by lines")
+            print(f"File {file} is not covered by lines")
             continue
         else:
             lines_to_tests = lines_to_tests_file[file_indexed]
