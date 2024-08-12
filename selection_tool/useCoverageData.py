@@ -264,7 +264,10 @@ class CoverageData:
         # load map of function/control/table names to index for specific device
         type_to_index = self.collection_map[type_of_collection]['index']
         indices = []
-        change_name_extracted = self.extract_function_name(change_name)
+        if type_of_collection == "functions":
+            change_name_extracted = self.extract_function_name(change_name)
+        else:
+            change_name_extracted = change_name
         # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
