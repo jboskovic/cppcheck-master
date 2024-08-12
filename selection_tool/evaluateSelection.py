@@ -27,12 +27,11 @@ if __name__ == '__main__':
     lines_to_tests_file = read_json(coverage_location_for_branch + "/lines_to_tests.json")
     files_indexed_files = read_json(coverage_location_for_branch + "/files_indexed.json")
     tests_indexed_filles = read_json(coverage_location_for_branch + "/test_indexed.json")
-
     covered_tests = []
     for file, lines in changed_lines.items():
         file_indexed  = None
         if file not in files_indexed_files:
-            print("File doesnt have coverage")
+            print(f"File {file} doesnt have coverage")
             continue
         else:
             file_indexed = str(files_indexed_files[file])
@@ -51,6 +50,7 @@ if __name__ == '__main__':
         if index in covered_tests:
             covered_tests_names.append(test)
 
+    print("Selected tests")
     print(test)
 
 
