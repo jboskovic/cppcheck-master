@@ -265,9 +265,10 @@ class CoverageData:
         # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
-                print("Changed name ", change_name)
-                print("Name from collection ", whole_name)
                 if change_name == whole_name:
+                    print("IS indexed")
+                    print("Changed name ", change_name)
+                    print("Name from collection ", whole_name)
                     indices.append(index)
             # functions can be generic
             else:
