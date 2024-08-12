@@ -229,16 +229,7 @@ class CoverageData:
             name_without_args = type_name
             if '(' in name_without_args:
                 name_without_args = type_name.split('(')[0]
-
-            if '::' in name_without_args:
-                splited_string = name_without_args.split("::")
-                if len(splited_string) > 2:
-                    print("splited ", splited_string[0])
-                    print("splited ", splited_string[1])
-                    name_without_args = splited_string[0] + "::" + splited_string[1]
-                    print("new name ", name_without_args)
     
-
             if type_to_test_indexed is None:
                 print(
                     "Try searching by function index")
@@ -280,8 +271,11 @@ class CoverageData:
             else:
                 if " " in change_name:
                     change_name = change_name.split(" ")[1]
-                if change_name + '(' in whole_name or change_name + '<' in whole_name:
-                    indices.append(index)
+                count_of_spliter_original = change_name.count("::")
+                count_of_spliter_found = whole_name.count("::")
+                if count_of_spliter_original == count_of_spliter_found:
+                    if change_name + '(' in whole_name or change_name + '<' in whole_name:
+                        indices.append(index)
 
 
         if indices == []:
