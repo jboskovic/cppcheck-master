@@ -34,9 +34,7 @@ if __name__ == '__main__':
             print(f"File {file} doesnt have coverage")
             continue
         else:
-            print("File found ", file)
             file_indexed = str(files_indexed_files[file])
-            print("Index ", file_indexed)
         
         lines_to_tests = None
         if file_indexed not in lines_to_tests_file:
@@ -44,18 +42,13 @@ if __name__ == '__main__':
             continue
         else:
             lines_to_tests = lines_to_tests_file[file_indexed]
-        print(f"Covered lines for file {lines_to_tests} {file}")
         for line in lines:
-            print("Changed line number ", line)
             if str(line) in lines_to_tests:
-                print(f"Line is covered {line}")
                 covered_tests.extend(lines_to_tests[str(line)])
-                print(f"Found tests {lines_to_tests[str(line)]}")
 
     covered_tests_names = []
     for test, index in tests_indexed_filles.items():
         if index in covered_tests:
-            print(f"Index {index} in covered tests")
             covered_tests_names.append(test)
 
     print("Selected tests")
