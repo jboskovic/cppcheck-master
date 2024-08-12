@@ -279,7 +279,7 @@ class CoverageData:
                     change_name = change_name.split("static ")[1]
                     print("Change name remove static ", change_name)
                 if count_of_spliter_original == count_of_spliter_found:
-                    if change_name + '(' in whole_name or change_name + '<' in whole_name or change_name in whole_name:
+                    if change_name + '(' in whole_name or change_name + '<' in whole_name:
                         print("Change function has similar names as whole name ")
                         print(change_name)
                         print(whole_name)
