@@ -123,12 +123,14 @@ class Collector:
         json_object = json.loads(json_object)
         for file_object in json_object['files']:
             file = file_object['file']
+            print("File ", file)
             file_index = str(self._storage.insert_file_indexed(file))
             executed_lines = []
             functions = []
 
             for line_info in file_object['lines']:
                 if line_info['count'] > 0:
+                    print("Executed line ", line_info['line_number'])
                     executed_lines.append(line_info['line_number'])
 
             for function_info in file_object['functions']:
@@ -148,6 +150,7 @@ class Collector:
                 # Merge executed lines and functions without duplicates
                 all_lines = list(set(new_json_object_lines[file_index] + executed_lines))
                 new_json_object_lines[file_index] = all_lines
+                print("All executted lines in file ", file, " ",  all_lines)
                 all_functions = list(set(new_json_object_functions[file_index] + functions))
                 new_json_object_functions[file_index] = all_functions
                 
