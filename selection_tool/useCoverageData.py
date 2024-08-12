@@ -276,9 +276,6 @@ class CoverageData:
             # functions can be generic
             else:
                 if change_name_extracted + '(' in whole_name or change_name_extracted + '<' in whole_name:
-                    print("Change function has similar names as whole name ")
-                    print(change_name_extracted)
-                    print(whole_name)
                     indices.append(index)
 
 
