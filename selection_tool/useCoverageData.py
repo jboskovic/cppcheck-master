@@ -273,6 +273,9 @@ class CoverageData:
             else:
                 count_of_spliter_original = change_name.count("::")
                 count_of_spliter_found = whole_name.count("::")
+                if "::" in change_name:
+                    splitted_pars = change_name.split("::")
+                    change_name = splitted_pars[0].strip() + "::" + splitted_pars[1].strip()
                 if "static " in change_name:
                     change_name = change_name.split("static ")[1]
                     print("Change name remove static ", change_name)
