@@ -8,7 +8,7 @@ class ParsePR:
         self.baseline = self.get_baseline_of_PR()
         self.collected_changes = self.get_changes_from_PR((".cpp", ".h", ".c"))
         self.changed_files = self.get_changed_files_from_PR()
-        self.changed_lines = self.get_changed_lines_from_PR((".cpp", ".h", ".c"))
+        self.changed_lines = self.get_changed_lines_from_PR()
 
     def get_baseline_of_PR(self):
         try:
@@ -114,9 +114,10 @@ class ParsePR:
         if collected_changes['has_h_changes_without_cpp_changes'] is None or collected_changes['functions'] != {}:
             collected_changes['has_h_changes_without_cpp_changes'] = False
 
+        print("Changed functions per file ", collected_changes)
         return collected_changes
 
-    def get_changed_lines_from_PR(self, coverage_extensions):
+    def get_changed_lines_from_PR(self):
         try:
             output = subprocess_call(
                 'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.c\''
