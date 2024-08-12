@@ -83,6 +83,7 @@ class Collector:
         return gcno_files_path_list
     
     def collect_data_from_test_file(self, test):
+        print("COllect for test ", test)
         # directory where .gcda files are stored for given test
         dir_name_with_tests_gcda_files = self.gcda_dir + '/' + test + '/'
         files_lines = {}
@@ -90,6 +91,7 @@ class Collector:
         self.create_gcno_symlinks(dir_name_with_tests_gcda_files)
         command = "cd {} &&  find . -name '*.gcno' -print0 | xargs -0 -I{{}} gcov -tir {{}} 2>/dev/null".format(dir_name_with_tests_gcda_files)
         for json_string in os.popen(command):
+            print("PARSE FULL JSON OBJECT")
             output_functions, output_lines = self.parse_full_json_object(json_string)
             for file, list_of_lines in output_lines.items():
                 if file not in files_lines:
@@ -123,7 +125,7 @@ class Collector:
         json_object = json.loads(json_object)
         for file_object in json_object['files']:
             file = file_object['file']
-            print("File ", file)
+            print("FILE ", file)
             file_index = str(self._storage.insert_file_indexed(file))
             executed_lines = []
             functions = []
@@ -150,7 +152,6 @@ class Collector:
                 # Merge executed lines and functions without duplicates
                 all_lines = list(set(new_json_object_lines[file_index] + executed_lines))
                 new_json_object_lines[file_index] = all_lines
-                print("All executted lines in file ", file, " ",  all_lines)
                 all_functions = list(set(new_json_object_functions[file_index] + functions))
                 new_json_object_functions[file_index] = all_functions
                 
