@@ -264,28 +264,19 @@ class CoverageData:
         # load map of function/control/table names to index for specific device
         type_to_index = self.collection_map[type_of_collection]['index']
         indices = []
+        change_name_extracted = self.extract_function_name(change_name)
         # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
-                if change_name == whole_name:
+                if change_name_extracted == whole_name:
                     indices.append(index)
             # functions can be generic
             else:
-                count_of_spliter_original = change_name.count("::")
-                count_of_spliter_found = whole_name.count("::")
-                    
-                if "static " in change_name:
-                    change_name = change_name.split("static ")[1]
-                    print("Change name remove static ", change_name)
-
-                
-                change_name = self.extract_function_name(change_name)
-                if count_of_spliter_original == count_of_spliter_found:
-                    if change_name + '(' in whole_name or change_name + '<' in whole_name:
-                        print("Change function has similar names as whole name ")
-                        print(change_name)
-                        print(whole_name)
-                        indices.append(index)
+                if change_name_extracted + '(' in whole_name or change_name_extracted + '<' in whole_name:
+                    print("Change function has similar names as whole name ")
+                    print(change_name_extracted)
+                    print(whole_name)
+                    indices.append(index)
 
 
         if indices == []:
@@ -297,10 +288,11 @@ class CoverageData:
     def extract_function_name(self, full_signature):
         # Split the string by spaces
         parts = full_signature.split()
-
+        print("Parts ", parts)
         # Find the part that contains '::'
         for part in parts:
             if '::' in part:
+                print("Part ", part)
                 return part
 
         return full_signature
