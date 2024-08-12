@@ -2,6 +2,7 @@ from helper_functions import *
 import os
 from coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
 from datetime import datetime, timedelta
+import re
 
 def convert_string_to_datetime(date_string):
     # format of the string 2022-12-20-20:15:03
@@ -179,11 +180,6 @@ class CoverageData:
         for file_name, functions in self.changes_map[type_name].items():
             if file_name is None:
                 continue  # file is another device's specific file
-            if project_name in file_name:
-                file_name_relative = file_name.split(project_name)[1]
-            else:
-                print("File {} not from project {}".format(file_name, project_name))
-                continue
             file_has_cov_output = False
             for func in functions:
                 if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
@@ -197,15 +193,14 @@ class CoverageData:
                         print("Change {} of type {} is not indexed".format(func, type_name))
                         print("For {} tests are not gonna be selected.".format(func))
                         continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name_relative)
+                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
-                    print("Selected tests for this change {}".format(tests_to_run))
                     if not run_default:
                         list_of_tests_need_for_run += tests_to_run
 
             if file_has_cov_output:
-                self.changed_files_with_coverage_output.append(file_name_relative)
+                self.changed_files_with_coverage_output.append(file_name)
 
         return list_of_tests_need_for_run
 
@@ -234,7 +229,7 @@ class CoverageData:
             name_without_args = type_name
             if '(' in name_without_args:
                 name_without_args = type_name.split('(')[0]
-
+    
             if type_to_test_indexed is None:
                 print(
                     "Try searching by function index")
@@ -244,7 +239,7 @@ class CoverageData:
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
             print("Type {} with the name {} and index {} selected tests {}".format(
-                type_of_collection, name_without_args, index, test_names))
+                type_name, name_without_args, index, test_names))
             selected_tests += test_names
 
         # with the set remove duplicates of indices and return the list of it
@@ -270,15 +265,17 @@ class CoverageData:
         # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
-                change_name = change_name.split('.')[0]
                 if change_name == whole_name:
                     indices.append(index)
             # functions can be generic
             else:
                 if " " in change_name:
                     change_name = change_name.split(" ")[1]
-                if change_name + '(' in whole_name or change_name + '<' in whole_name:
-                    indices.append(index)
+                count_of_spliter_original = change_name.count("::")
+                count_of_spliter_found = whole_name.count("::")
+                if count_of_spliter_original == count_of_spliter_found:
+                    if change_name + '(' in whole_name or change_name + '<' in whole_name:
+                        indices.append(index)
 
 
         if indices == []:
