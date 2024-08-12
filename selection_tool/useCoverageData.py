@@ -221,7 +221,7 @@ class CoverageData:
             if str(file_index) not in type_to_test_indexed_per_file:
                 print("File {} is indexed but there isn't mapping from that file to functions and tests.".format(file_name))
                 type_to_test_indexed = None
-            else:
+            else: 
                 type_to_test_indexed = type_to_test_indexed_per_file[str(file_index)]
 
         for index in func_indices:
@@ -234,8 +234,10 @@ class CoverageData:
                 print(
                     "Try searching by function index")
                 tests_indexed = self.search_by_function_index(type_to_test_indexed_per_file, index)
-            else:
+            elif str(index) in type_to_test_indexed:
                 tests_indexed = type_to_test_indexed[str(index)]
+            else:
+                continue
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
             print("Type {} with the name {} and index {} selected tests {}".format(
@@ -262,26 +264,38 @@ class CoverageData:
         # load map of function/control/table names to index for specific device
         type_to_index = self.collection_map[type_of_collection]['index']
         indices = []
+        if type_of_collection == "functions":
+            change_name_extracted = self.extract_function_name(change_name)
+        else:
+            change_name_extracted = change_name
         # collect indices which whole name of the function is similar to given name
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
-                if change_name == whole_name:
+                if change_name_extracted == whole_name:
                     indices.append(index)
             # functions can be generic
             else:
-                if " " in change_name:
-                    change_name = change_name.split(" ")[1]
-                count_of_spliter_original = change_name.count("::")
-                count_of_spliter_found = whole_name.count("::")
-                if count_of_spliter_original == count_of_spliter_found:
-                    if change_name + '(' in whole_name or change_name + '<' in whole_name:
-                        indices.append(index)
+                if change_name_extracted + '(' in whole_name or change_name_extracted + '<' in whole_name:
+                    indices.append(index)
 
 
         if indices == []:
             return None
 
         return indices
+
+
+    def extract_function_name(self, full_signature):
+        # Split the string by spaces
+        parts = full_signature.split()
+        print("Parts ", parts)
+        # Find the part that contains '::'
+        for part in parts:
+            if '::' in part:
+                print("Part ", part)
+                return part
+
+        return full_signature
 
     def convert_test_indexed_to_test_name(self, tests_indexed):
         test_names = []
