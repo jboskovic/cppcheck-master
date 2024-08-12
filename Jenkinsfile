@@ -3,9 +3,9 @@ pipeline {
     options {
         skipDefaultCheckout true // Skip the default checkout
     }
-    environment {
-        GIT_SHA = "" // Initialize a variable to store the Git SHA
-    }
+    // environment {
+    //     GIT_SHA = "" // Initialize a variable to store the Git SHA
+    // }
     stages {
         // stage('Prepare Workspace') {
         //     steps {
@@ -44,7 +44,7 @@ pipeline {
         stage("Collecting") {
             steps {
                 echo "Get code coverage collection..."
-                sh "cd cppcheck_project && python3 ../selection_tool/coverage_tool/collectData.py --sha ${GIT_SHA} --branch-name ${env.BRANCH_NAME} -j8"
+                sh "cd cppcheck_project && python3 ../selection_tool/coverage_tool/collectData.py --sha 08930025e709b2032e4f342c8cad9f3b820324c4 --branch-name ${env.BRANCH_NAME} -j8"
             }
         }
         // stage("Evaluate the selection") {
