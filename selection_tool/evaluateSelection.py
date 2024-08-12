@@ -23,9 +23,9 @@ if __name__ == '__main__':
     format_for_directory =  date_of_sha + '_sha_' + args.sha
 
     coverage_location_for_branch = coverage_location_jenkins_path_base + '/' + args.branch_name + '/' + format_for_directory
-    lines_to_tests_file = read_file(coverage_location_for_branch + "lines_to_tests.json")
-    files_indexed_files = read_file(coverage_location_for_branch + "files_indexed.json")
-    tests_indexed_filles = read_file(coverage_location_for_branch + "tests_indexed.json")
+    lines_to_tests_file = read_file(coverage_location_for_branch + "/lines_to_tests.json")
+    files_indexed_files = read_file(coverage_location_for_branch + "/files_indexed.json")
+    tests_indexed_filles = read_file(coverage_location_for_branch + "/tests_indexed.json")
 
     covered_tests = []
     for file, lines in changed_lines.items():
