@@ -119,10 +119,10 @@ class ParsePR:
     def get_changed_lines_from_PR(self, coverage_extensions):
         try:
             output = subprocess_call(
-                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.c\'')
+                'git --no-pager diff --ignore-space-change --ignore-blank-lines --unified=0 `git merge-base origin/main HEAD` -- \'*.cpp\' \'*.h\' \'*.c\''
+            )
         except Exception as e:
-            exit_with_message(f"Getting chagned files from PR failed {e}")
-
+            exit_with_message(f"Getting changed files from PR failed {e}")
 
         # Regex patterns to match file headers and hunks
         file_header_pattern = re.compile(r"^diff --git a/(.*) b/(.*)")
@@ -143,10 +143,17 @@ class ParsePR:
             if hunk_match and current_file:
                 start_line = int(hunk_match.group(1))
                 num_lines = int(hunk_match.group(2) or 1)
-                for i in range(start_line, start_line + num_lines):
-                    if current_file not in changed_lines:
-                        changed_lines[current_file] = []
-                    changed_lines[current_file].append(i)
+                current_line = start_line
+                for i in range(num_lines):
+                    # Skip deleted lines (lines starting with '-')
+                    if line.startswith('-'):
+                        continue
+                    # Only add lines that start with '+' (added lines)
+                    if line.startswith('+') or not line.startswith('-'):
+                        if current_file not in changed_lines:
+                            changed_lines[current_file] = []
+                        changed_lines[current_file].append(current_line)
+                    current_line += 1
 
         print("Changed lines per file ", changed_lines)
         return changed_lines

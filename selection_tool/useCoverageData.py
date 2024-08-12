@@ -266,9 +266,6 @@ class CoverageData:
         for whole_name, index in type_to_index.items():
             if type_of_collection == 'files':
                 if change_name == whole_name:
-                    print("IS indexed")
-                    print("Changed name ", change_name)
-                    print("Name from collection ", whole_name)
                     indices.append(index)
             # functions can be generic
             else:
