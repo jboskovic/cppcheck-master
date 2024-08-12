@@ -60,7 +60,7 @@ class SelectRelevantTests:
         
         file_with_changes = f"/var/jenkins_home/changes/changed_lines_{self.sha}.txt"
         print("Write changed lines to a file {}".format(file_with_changes))
-        write_json(self.parser.changed_lines, file_with_changes)
+        write_json(file_with_changes, self.parser.changed_lines)
         print('###################################')
 
 
