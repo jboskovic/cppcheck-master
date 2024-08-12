@@ -38,6 +38,9 @@ namespace {
 void CheckInternal::checkTokenMatchPatterns()
 {
     const SymbolDatabase *symbolDatabase = mTokenizer->getSymbolDatabase();
+    if (true) {
+        const std::string& tmp;
+    }
     for (const Scope *scope : symbolDatabase->functionScopes) {
         for (const Token* tok = scope->bodyStart->next(); tok != scope->bodyEnd; tok = tok->next()) {
             if (!Token::simpleMatch(tok, "Token :: Match (") && !Token::simpleMatch(tok, "Token :: findmatch ("))
