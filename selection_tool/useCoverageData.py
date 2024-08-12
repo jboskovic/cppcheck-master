@@ -273,6 +273,8 @@ class CoverageData:
                     change_name = change_name.split(" ")[1]
                 count_of_spliter_original = change_name.count("::")
                 count_of_spliter_found = whole_name.count("::")
+                if "static " in change_name:
+                    change_name = change_name.split("static ")[1]
                 if count_of_spliter_original == count_of_spliter_found:
                     if change_name + '(' in whole_name or change_name + '<' in whole_name:
                         indices.append(index)
