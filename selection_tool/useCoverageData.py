@@ -231,12 +231,15 @@ class CoverageData:
                 name_without_args = type_name.split('(')[0]
 
             if '::' in name_without_args:
+                print("Func name has ::")
                 pattern = f"(.*?{re.escape('::')}.*?{re.escape('::')})(.*)"
                 match = re.match(pattern, name_without_args)
                 
                 if match:
+                    print("Func has :: twice")
                     # Set the string to the part up to and including the second occurrence
                     name_without_args = match.group(1)
+                    print("New name ", name_without_args)
     
 
             if type_to_test_indexed is None:
