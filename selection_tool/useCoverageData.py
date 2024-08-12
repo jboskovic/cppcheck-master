@@ -303,7 +303,7 @@ class CoverageData:
             if '::' in part:
                 return part
 
-        return None
+        return full_signature
 
     def convert_test_indexed_to_test_name(self, tests_indexed):
         test_names = []
