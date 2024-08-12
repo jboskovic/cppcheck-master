@@ -75,6 +75,7 @@ class ParsePR:
                 line = line.strip()
                 if line.startswith('+++ '):
                     file_name = line.split('+++ ')[1][2:].strip()
+                    file_name = file_name[1:]
                     if not self.check_if_ext(file_name, coverage_extensions):
                         file_is_covered_with_coverage = False
                     else:
