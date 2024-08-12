@@ -237,7 +237,6 @@ class CoverageData:
             elif str(index) in type_to_test_indexed:
                 tests_indexed = type_to_test_indexed[str(index)]
             else:
-                print("Function with index ", str(index), " not found in the collection function to tests ", type_of_collection)
                 continue
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
