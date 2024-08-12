@@ -45,7 +45,7 @@ if __name__ == '__main__':
             continue
         else:
             lines_to_tests = lines_to_tests_file[file_indexed]
-
+        print(f"Covered lines for file {lines_to_tests} {file}")
         for line in lines:
             print("Changed line number ", line)
             if str(line) in lines_to_tests:
