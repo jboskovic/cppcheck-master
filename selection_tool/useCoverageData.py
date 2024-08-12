@@ -179,11 +179,6 @@ class CoverageData:
         for file_name, functions in self.changes_map[type_name].items():
             if file_name is None:
                 continue  # file is another device's specific file
-            if project_name in file_name:
-                file_name_relative = file_name.split(project_name)[1]
-            else:
-                print("File {} not from project {}".format(file_name, project_name))
-                continue
             file_has_cov_output = False
             for func in functions:
                 if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
