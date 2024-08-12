@@ -221,10 +221,8 @@ class CoverageData:
             if str(file_index) not in type_to_test_indexed_per_file:
                 print("File {} is indexed but there isn't mapping from that file to functions and tests.".format(file_name))
                 type_to_test_indexed = None
-            else:
-                print("For type ", type_of_collection)
-                print("Find file index ", file_index)
-                type_to_test_indexed = type_to_test_indexed_per_file[file_index]
+            else: 
+                type_to_test_indexed = type_to_test_indexed_per_file[str(file_index)]
 
         for index in func_indices:
             type_name = self.convert_index_to_name(type_of_collection, index)
@@ -236,8 +234,12 @@ class CoverageData:
                 print(
                     "Try searching by function index")
                 tests_indexed = self.search_by_function_index(type_to_test_indexed_per_file, index)
-            else:
+            elif str(index) in type_to_test_indexed:
+                print("for type ", type_of_collection)
+                print("Index from function index ", str(index))
                 tests_indexed = type_to_test_indexed[str(index)]
+            else:
+                print("Function with index ", str(index), " not found in the collection function to tests")
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
             print("Type {} with the name {} and index {} selected tests {}".format(
