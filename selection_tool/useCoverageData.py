@@ -2,6 +2,7 @@ from helper_functions import *
 import os
 from coverage_tool.storage import format_git_sha_date, coverage_location_jenkins_path_base
 from datetime import datetime, timedelta
+import re
 
 def convert_string_to_datetime(date_string):
     # format of the string 2022-12-20-20:15:03
@@ -228,6 +229,15 @@ class CoverageData:
             name_without_args = type_name
             if '(' in name_without_args:
                 name_without_args = type_name.split('(')[0]
+
+            if '::' in name_without_args:
+                pattern = f"(.*?{re.escape('::')}.*?{re.escape('::')})(.*)"
+                match = re.match(pattern, name_without_args)
+                
+                if match:
+                    # Set the string to the part up to and including the second occurrence
+                    name_without_args = match.group(1)
+    
 
             if type_to_test_indexed is None:
                 print(
