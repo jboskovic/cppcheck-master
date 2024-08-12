@@ -192,7 +192,7 @@ class CoverageData:
                         print("Change {} of type {} is not indexed".format(func, type_name))
                         print("For {} tests are not gonna be selected.".format(func))
                         continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name_relative)
+                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
                     if len(tests_to_run) != 0:
                         file_has_cov_output = True
                     print("Selected tests for this change {}".format(tests_to_run))
@@ -200,7 +200,7 @@ class CoverageData:
                         list_of_tests_need_for_run += tests_to_run
 
             if file_has_cov_output:
-                self.changed_files_with_coverage_output.append(file_name_relative)
+                self.changed_files_with_coverage_output.append(file_name)
 
         return list_of_tests_need_for_run
 
