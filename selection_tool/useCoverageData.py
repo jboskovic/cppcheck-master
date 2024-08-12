@@ -235,11 +235,10 @@ class CoverageData:
                     "Try searching by function index")
                 tests_indexed = self.search_by_function_index(type_to_test_indexed_per_file, index)
             elif str(index) in type_to_test_indexed:
-                print("for type ", type_of_collection)
-                print("Index from function index ", str(index))
                 tests_indexed = type_to_test_indexed[str(index)]
             else:
-                print("Function with index ", str(index), " not found in the collection function to tests")
+                print("Function with index ", str(index), " not found in the collection function to tests ", type_of_collection)
+                continue
 
             test_names = self.convert_test_indexed_to_test_name(tests_indexed)
             print("Type {} with the name {} and index {} selected tests {}".format(
