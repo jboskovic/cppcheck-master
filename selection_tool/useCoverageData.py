@@ -278,8 +278,8 @@ class CoverageData:
                     change_name = change_name.split("static ")[1]
                     print("Change name remove static ", change_name)
 
-                if " " in change_name:
-                    change_name = change_name.split(" ")[1]
+                
+                change_name = self.extract_function_name(change_name)
                 if count_of_spliter_original == count_of_spliter_found:
                     if change_name + '(' in whole_name or change_name + '<' in whole_name:
                         print("Change function has similar names as whole name ")
@@ -292,6 +292,18 @@ class CoverageData:
             return None
 
         return indices
+
+
+    def extract_function_name(self, full_signature):
+        # Split the string by spaces
+        parts = full_signature.split()
+
+        # Find the part that contains '::'
+        for part in parts:
+            if '::' in part:
+                return part
+
+        return None
 
     def convert_test_indexed_to_test_name(self, tests_indexed):
         test_names = []
