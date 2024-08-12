@@ -29,26 +29,38 @@ class SelectRelevantTests:
         print("Selecteed tests")
         print(self.coverage_tool.output)
         print('###################################')
-        self.write_selected_test_to_file(self.coverage_tool.output)
+        self.write_selected_test_to_file()
+        self.write_to_files_evaluation_data()
     
-    def write_selected_test_to_file(self, list_of_tests):
-        if list_of_tests != ["all"]:
+    def write_selected_test_to_file(self):
+        if self.coverage_tool.output != ["all"]:
             file_name = project_name + "/selected_tests.txt"
-            file_for_evaluation = f"/var/jenkins_home/selections/selected_tests_{self.sha}.txt"
             print("Write selected tests to a file {}".format(file_name))
             try:
                 with open(file_name, 'w') as file:
-                    for test in list_of_tests:
+                    for test in self.coverage_tool.output:
                         file.write(f"{test}\n")
-                    print("Successfully wrote {} tests to {}".format(len(list_of_tests), file_name))
-                with open(file_for_evaluation, 'w') as file:
-                    for test in list_of_tests:
-                        file.write(f"{test}\n")
-                    print("Successfully wrote {} tests to {}".format(len(list_of_tests), file_for_evaluation))
+                    print("Successfully wrote {} tests to {}".format(len(self.coverage_tool.output), file_name))
             except Exception as e:
                 print(f"An error occurred: {e}")
         else:
             print("Tool for Selecting Relevant Tests selected all tests")
+        print('###################################')
+
+    def write_to_files_evaluation_data(self):
+        file_for_evaluation = f"/var/jenkins_home/selections/selected_tests_{self.sha}.txt"
+        print("Write selected tests to a file {}".format(file_for_evaluation))
+        try:
+            with open(file_for_evaluation, 'w') as file:
+                for test in self.coverage_tool.output:
+                    file.write(f"{test}\n")
+                print("Successfully wrote {} tests to {}".format(len(self.coverage_tool.output), file_for_evaluation))
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        
+        file_with_changes = f"/var/jenkins_home/changes/changed_lines_{self.sha}.txt"
+        print("Write changed lines to a file {}".format(file_with_changes))
+        write_json(self.parser.changed_lines, file_with_changes)
         print('###################################')
 
 
