@@ -41,9 +41,12 @@ if __name__ == '__main__':
             print(f"File {file} is not covered by lines")
             continue
         else:
+            print("File ", file)
             lines_to_tests = lines_to_tests_file[file_indexed]
         for line in lines:
             if str(line) in lines_to_tests:
+                print("Selected  tests ", lines_to_tests[str(line)])
+                print("Because of the line ", line)
                 covered_tests.extend(lines_to_tests[str(line)])
 
     covered_tests_names = []
