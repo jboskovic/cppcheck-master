@@ -168,12 +168,6 @@ class CoverageData:
         set_of_tests |= set(tests_from_type)
         return set_of_tests
 
-    def make_test_paths(self, list_of_tests):
-        list_of_test_paths = []
-        for test in list_of_tests:
-            list_of_test_paths.append({'type': 'test_path', 'data': test})
-        return list_of_test_paths
-
     def get_relevant_tests_for_type(self, type_name):
         list_of_tests_need_for_run = []
         run_default = False
@@ -288,14 +282,8 @@ class CoverageData:
     def extract_function_name(self, full_signature):
         # Split the string by spaces
         parts = full_signature.split()
-        print("Parts ", parts)
-        # Find the part that contains '::'
-        for part in parts:
-            if '::' in part:
-                print("Part ", part)
-                return part
-
-        return full_signature
+        
+        return parts[-1]
 
     def convert_test_indexed_to_test_name(self, tests_indexed):
         test_names = []
