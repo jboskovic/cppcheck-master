@@ -176,22 +176,22 @@ class CoverageData:
                 continue  # file is another device's specific file
             file_has_cov_output = False
             for func in functions:
-                if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
-                    print("Change is in a structure or enum ", func)
+                # if type_name == 'functions' and 'enum ' in func or 'struct ' in func:
+                #     print("Change is in a structure or enum ", func)
+                #     file_has_cov_output = True
+                #     run_default = True
+                #     list_of_tests_need_for_run = self.default_output
+                # else:
+                func_indices = self.get_index_from_change_name(type_name, func)
+                if func_indices is None:
+                    print("Change {} of type {} is not indexed".format(func, type_name))
+                    print("For {} tests are not gonna be selected.".format(func))
+                    continue
+                tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
+                if len(tests_to_run) != 0:
                     file_has_cov_output = True
-                    run_default = True
-                    list_of_tests_need_for_run = self.default_output
-                else:
-                    func_indices = self.get_index_from_change_name(type_name, func)
-                    if func_indices is None:
-                        print("Change {} of type {} is not indexed".format(func, type_name))
-                        print("For {} tests are not gonna be selected.".format(func))
-                        continue
-                    tests_to_run = self.get_list_of_tests_functions_from_file(type_name, func_indices, file_name)
-                    if len(tests_to_run) != 0:
-                        file_has_cov_output = True
-                    if not run_default:
-                        list_of_tests_need_for_run += tests_to_run
+                if not run_default:
+                    list_of_tests_need_for_run += tests_to_run
 
             if file_has_cov_output:
                 self.changed_files_with_coverage_output.append(file_name)
